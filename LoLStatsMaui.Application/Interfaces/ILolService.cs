@@ -1,4 +1,6 @@
-﻿using Domain.Models.Entities;
+﻿using Domain.Models.Enities;
+using Domain.Models.Enities.Requests;
+using Domain.Models.Entities;
 using Domain.Models.Entities.Requests;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ namespace LoLStatsMaui.Application.Interfaces
 {
     public interface ILolService
     {
-        Task<SummonerOverview> GetSummonerOverviewAsync(string gameName, string tagLine);
-        Task<List<LolMatch>> GetLolMatchesAsync(MatchQueryRequest request);
+        Task<LolProfileData> GetLolProfileAsync(string lolName);
+
     }
 }

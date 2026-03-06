@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Domain.Models.Enities.Requests;
 using Domain.Models.Entities;
 using Domain.Models.Entities.Requests;
 using Domain.Models.Interfaces;
@@ -60,8 +61,7 @@ namespace LoLStatsMaui.ViewModels
         {
             try
             {
-                await LoadSummonerOverview();
-                await LoadMatches();
+                await LoadLolProfile();
             }
             catch (NotFoundException e)
             {
@@ -92,35 +92,17 @@ namespace LoLStatsMaui.ViewModels
                 HasError = true;
             }
             HasError = false;
-            LoadImage();
             
         }
-        
-        private async Task LoadSummonerOverview()
+        private async Task LoadLolProfile()
         {
-            string[] splitName = LolName.Split('#');
-            if (splitName.Length != 2) return;
-            string gameName = splitName[0];
-            string tagLine = splitName[1];
-            SummonerOverview = await _lolService.GetSummonerOverviewAsync(gameName, tagLine);
-            
-            
-
-        }
-        private void LoadImage()
-        {
+            var profile = await _lolService.GetLolProfileAsync(LolName);
+            SummonerOverview = profile.SummonerOverview;
             ProfileImage = ImageSource.FromFile($"ProfileIcons/{SummonerOverview.ProfileIconId}.png");
+            MatchList = new ObservableCollection<LolMatch>(profile.Matches);
         }
-        private async Task LoadMatches()
-        {
-            var request = new MatchQueryRequest
-            {
-                Uuid = SummonerOverview.Uuid,
-                Region = SummonerOverview.RawRegion,
-                Count = 5,
-            };
-            var matches = await _lolService.GetLolMatchesAsync(request);
-            MatchList = new ObservableCollection<LolMatch>(matches);
-        }
+
+        
+
     }
 }

@@ -21,8 +21,6 @@ namespace LoLStatsMaui.Infrastructure.Repositories
         public LolApiRepository(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            Debug.WriteLine($"BaseAddress: {_httpClient.BaseAddress}");
-            Debug.WriteLine($"Headers: {string.Join(", ", _httpClient.DefaultRequestHeaders.Select(h => h.Key))}");
         }
         public async Task<LolAccountDto> GetLolAccount(string gameName, string tagLine)
         {
