@@ -1,9 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using LoLStatsMaui.Exceptions;
-using LoLStatsMaui.Models;
-using LoLStatsMaui.Models.Requests;
-using LoLStatsMaui.Repositories;
+using Domain.Models.Entities;
+using Domain.Models.Entities.Requests;
+using Domain.Models.Interfaces;
+using LoLStatsMaui.Application.Interfaces;
+using LoLStatsMaui.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,13 +12,17 @@ using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Text;
 
+
 namespace LoLStatsMaui.ViewModels
 {
+    [QueryProperty(nameof(LolName), "lolName")]
     public partial class LolAccountOverViewModel : ObservableObject
     {
-        private string _lolName;
-        private ILolRepository _lolRepository;
+        
+        private ILolService _lolService;
 
+        [ObservableProperty]
+        private string _lolName;
         [ObservableProperty]
         private SummonerOverview _summonerOverview;
 
@@ -33,22 +38,34 @@ namespace LoLStatsMaui.ViewModels
         [ObservableProperty]
         private bool _hasError;
 
-        public LolAccountOverViewModel(string lolName)
+        public LolAccountOverViewModel(ILolService lolService)
         {
             ProfileImage = ImageSource.FromFile("none.png");
-            _lolName = lolName;
-            _lolRepository = new LolApiRepository(new HttpClient());
-            LoadPage();
+            _lolService = lolService;
+            SummonerOverview = new SummonerOverview();
 
         }
+        partial void OnLolNameChanged(string value)
+        {
+            if (value != null)
+            {
+                LoadPage();
+            }
+        }
         private async void LoadPage()
+        {
+            await LoadPageAsync();
+        }
+        private async Task LoadPageAsync()
         {
             try
             {
                 await LoadSummonerOverview();
+                await LoadMatches();
             }
             catch (NotFoundException e)
             {
+                
                 ErrorMessage = "Kontot hittades inte, Kolla om du stavade fel.";
                 Debug.WriteLine(e);
                 return;
@@ -76,16 +93,18 @@ namespace LoLStatsMaui.ViewModels
             }
             HasError = false;
             LoadImage();
-            await LoadMatches();
+            
         }
         
         private async Task LoadSummonerOverview()
         {
-            string[] splitName = _lolName.Split('#');
+            string[] splitName = LolName.Split('#');
             if (splitName.Length != 2) return;
             string gameName = splitName[0];
             string tagLine = splitName[1];
-            SummonerOverview = await _lolRepository.GetSummonerOverviewAsync(gameName, tagLine);
+            SummonerOverview = await _lolService.GetSummonerOverviewAsync(gameName, tagLine);
+            
+            
 
         }
         private void LoadImage()
@@ -97,10 +116,10 @@ namespace LoLStatsMaui.ViewModels
             var request = new MatchQueryRequest
             {
                 Uuid = SummonerOverview.Uuid,
-                Region = SummonerOverview.Region,
+                Region = SummonerOverview.RawRegion,
                 Count = 5,
             };
-            var matches = await _lolRepository.GetLolMatchesAsync(request);
+            var matches = await _lolService.GetLolMatchesAsync(request);
             MatchList = new ObservableCollection<LolMatch>(matches);
         }
     }

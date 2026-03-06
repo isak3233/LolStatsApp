@@ -15,8 +15,6 @@ namespace LoLStatsMaui.ViewModels
         public ICommand SubmitCommand { get; }
 
 
-        private INavigation _navigation;
-
         [ObservableProperty]
         private string _errorMessage;
 
@@ -24,11 +22,10 @@ namespace LoLStatsMaui.ViewModels
         private string _lolName;
 
 
-        public MainViewModel(INavigation navigation)
+        public MainViewModel()
         {
             SubmitCommand = new Command(OnSubmit);
            
-            _navigation = navigation;
         }
         private async void OnSubmit()
         {
@@ -53,7 +50,7 @@ namespace LoLStatsMaui.ViewModels
                 return;
             }
             ErrorMessage = "";
-            await _navigation.PushAsync(new LolAccountOverviewPage(LolName));
+            await Shell.Current.GoToAsync($"{nameof(LolAccountOverviewPage)}?lolName={Uri.EscapeDataString(LolName)}");
 
         }
 

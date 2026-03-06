@@ -8,7 +8,7 @@ namespace LoLStatsMaui
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = new MainViewModel(Navigation);
+            BindingContext = new MainViewModel();
 
         }
 

@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="../Domain.Models/Domain.Models.csproj" />
+  <Project Path="../LoLStatsMaui.Application/LoLStatsMaui.Application.csproj" />
+  <Project Path="../LoLStatsMaui.Infrastructure/LoLStatsMaui.Infrastructure.csproj" />
   <Project Path="LoLStatsMaui.csproj" />
 </Solution>

@@ -2,7 +2,7 @@
 
 namespace LoLStatsMaui
 {
-    public partial class App : Application
+    public partial class App : global::Microsoft.Maui.Controls.Application
     {
         public App()
         {

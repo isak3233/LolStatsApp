@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.Maui;
-using LoLStatsMaui.Repositories;
+using Domain.Models.Interfaces;
+using LoLStatsMaui.Application.Interfaces;
+using LoLStatsMaui.Infrastructure.Repositories;
 using LoLStatsMaui.ViewModels;
+using LoLStatsMaui.Application.Services;
 using LoLStatsMaui.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -24,8 +27,16 @@ namespace LoLStatsMaui
             builder.Logging.AddDebug();
             builder.Configuration.AddUserSecrets<App>();
 #endif
+            builder.Services.AddHttpClient<ILolRepository, LolApiRepository>(client =>
+            {
+                client.BaseAddress = new Uri(builder.Configuration["RiotApi:BaseUrl"]);
+                client.DefaultRequestHeaders.Add("X-Riot-Token", builder.Configuration["RiotApi:ApiKey"]);
+            });
+            builder.Services.AddScoped<ILolService, LolService>();
+
+            builder.Services.AddTransient<LolAccountOverViewModel>();
+            builder.Services.AddTransient<LolAccountOverviewPage>();
             var app = builder.Build();
-            AppConfig.Initialize(app.Services.GetService<IConfiguration>());
 
             return app;
         }
