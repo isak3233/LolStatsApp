@@ -3,6 +3,7 @@ using Domain.Models.Entities;
 using Domain.Models.Entities.Dto;
 using Domain.Models.Entities.Requests;
 using Domain.Models.EntitiesDto;
+using Domain.Models.Exceptions;
 using Domain.Models.Interfaces;
 using LoLStatsMaui.Domain.Exceptions;
 using System.Diagnostics;
@@ -66,6 +67,7 @@ namespace LoLStatsMaui.Infrastructure.Repositories
             if (statusCode == 404) throw new NotFoundException(json);
             if (statusCode == 401) throw new UnauthorizedException(json);
             if (statusCode == 403) throw new UnauthorizedException(json);
+            if (statusCode == 429) throw new RateLimitException(json);
             if (statusCode >= 500) throw new ServerException(json);
             response.EnsureSuccessStatusCode();
             return JsonSerializer.Deserialize<T>(json);

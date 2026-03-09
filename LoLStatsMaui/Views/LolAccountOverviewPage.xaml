@@ -6,395 +6,411 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="ThisPage"
     BackgroundColor="#0A1428">
-    <VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout>
+            <!--  Error meddelande  -->
+            <Label
+                Padding="100"
+                FontSize="30"
+                HorizontalTextAlignment="Center"
+                IsVisible="{Binding HasError}"
+                Text="{Binding ErrorMessage}"
+                TextColor="Red"
+                VerticalTextAlignment="Center" />
+            <!--  Lol profil  -->
+            <Grid IsVisible="{Binding ShowContent}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*" />
+                    <ColumnDefinition Width="0.7*" />
+                </Grid.ColumnDefinitions>
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Margin="0,40,0,0"
+                    HorizontalOptions="Start"
+                    Spacing="0">
 
-        <!--  Error meddelande  -->
-        <Label
-            Padding="100"
-            FontSize="30"
-            HorizontalTextAlignment="Center"
-            IsVisible="{Binding HasError}"
-            Text="{Binding ErrorMessage}"
-            TextColor="Red"
-            VerticalTextAlignment="Center" />
-        <!--  Lol profil  -->
-        <Grid IsVisible="{Binding ShowContent}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.2*" />
-                <ColumnDefinition Width="0.7*" />
-            </Grid.ColumnDefinitions>
-            <VerticalStackLayout
-                Grid.Column="1"
-                Margin="0,40,0,0"
-                HorizontalOptions="Start"
-                Spacing="0">
+                    <!--  Profilbild och metadata om profilnamn  -->
+                    <HorizontalStackLayout Spacing="16">
 
-                <!--  Profilbild och metadata om profilnamn  -->
-                <HorizontalStackLayout Spacing="16">
+                        <!--  Profilbild och level  -->
+                        <Grid HorizontalOptions="Start">
+                            <Image
+                                Aspect="AspectFill"
+                                HeightRequest="90"
+                                Source="{Binding SummonerOverview.ProfileIconString}"
+                                WidthRequest="90">
+                                <Image.Clip>
+                                    <RoundRectangleGeometry CornerRadius="8" Rect="0,0,90,90" />
+                                </Image.Clip>
+                            </Image>
+                            <Border
+                                Margin="0,0,0,-10"
+                                Padding="8,2"
+                                BackgroundColor="#C89B3C"
+                                HorizontalOptions="Center"
+                                StrokeShape="RoundRectangle 10"
+                                VerticalOptions="End">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="12"
+                                    Text="{Binding SummonerOverview.Level}"
+                                    TextColor="#1A1A2E" />
+                            </Border>
+                        </Grid>
 
-                    <!--  Profilbild och level  -->
-                    <Grid HorizontalOptions="Start">
-                        <Image
-                            Aspect="AspectFill"
-                            HeightRequest="90"
-                            Source="{Binding SummonerOverview.ProfileIconString}"
-                            WidthRequest="90">
-                            <Image.Clip>
-                                <RoundRectangleGeometry CornerRadius="8" Rect="0,0,90,90" />
-                            </Image.Clip>
-                        </Image>
-                        <Border
-                            Margin="0,0,0,-10"
-                            Padding="8,2"
-                            BackgroundColor="#C89B3C"
-                            HorizontalOptions="Center"
-                            StrokeShape="RoundRectangle 10"
-                            VerticalOptions="End">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="12"
-                                Text="{Binding SummonerOverview.Level}"
-                                TextColor="#1A1A2E" />
-                        </Border>
-                    </Grid>
-
-                    <!--  Namn och region  -->
-                    <VerticalStackLayout Spacing="8" VerticalOptions="Center">
-                        <HorizontalStackLayout Spacing="6">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="22"
-                                Text="{Binding SummonerOverview.SummonerName}"
-                                TextColor="White" />
-                            <Label
-                                Margin="0,0,0,3"
-                                FontSize="14"
-                                Text="{Binding SummonerOverview.TagLine, StringFormat='#{0}'}"
-                                TextColor="#8A8A9A"
-                                VerticalOptions="End" />
-                        </HorizontalStackLayout>
-                        <Border
-                            Padding="10,4"
-                            BackgroundColor="#1E3A5F"
-                            HorizontalOptions="Start"
-                            Stroke="#2A5080"
-                            StrokeShape="RoundRectangle 6"
-                            StrokeThickness="1">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="13"
-                                Text="{Binding SummonerOverview.Region}"
-                                TextColor="#5B9BD5" />
-                        </Border>
-                    </VerticalStackLayout>
-                </HorizontalStackLayout>
-
-                <!--  Rank och matcher grid  -->
-                <Grid Margin="0,20,0,0" ColumnSpacing="20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <!--  Rank kort  -->
-                    <HorizontalStackLayout Grid.Column="0">
-                        <CollectionView HorizontalOptions="Start" ItemsSource="{Binding SummonerOverview.RankEntries}">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Border
-                                        Margin="0,0,0,12"
-                                        Padding="20"
-                                        BackgroundColor="#0F1C2E"
-                                        Stroke="#1E3A5F"
-                                        StrokeShape="RoundRectangle 12"
-                                        StrokeThickness="1"
-                                        WidthRequest="320">
-                                        <VerticalStackLayout Spacing="10">
-                                            <Label
-                                                FontSize="15"
-                                                Text="{Binding QueueType}"
-                                                TextColor="#8A8A9A" />
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <Image
-                                                    Grid.Column="0"
-                                                    Margin="0,0,12,0"
-                                                    HeightRequest="50"
-                                                    Source="{Binding ImageString}"
-                                                    WidthRequest="50" />
-                                                <VerticalStackLayout
-                                                    Grid.Column="1"
-                                                    Spacing="4"
-                                                    VerticalOptions="Center">
-                                                    <HorizontalStackLayout Spacing="6">
-                                                        <Label
-                                                            FontAttributes="Bold"
-                                                            FontSize="18"
-                                                            Text="{Binding Tier}"
-                                                            TextColor="#C89B3C" />
-                                                        <Label
-                                                            FontAttributes="Bold"
-                                                            FontSize="18"
-                                                            Text="{Binding Rank}"
-                                                            TextColor="#C89B3C" />
-                                                    </HorizontalStackLayout>
-                                                    <Label
-                                                        FontSize="14"
-                                                        Text="{Binding LeaguePoints, StringFormat='{0} LP'}"
-                                                        TextColor="White" />
-                                                </VerticalStackLayout>
-                                                <VerticalStackLayout
-                                                    Grid.Column="2"
-                                                    Spacing="4"
-                                                    VerticalOptions="Center">
-                                                    <HorizontalStackLayout Spacing="8">
-                                                        <Label
-                                                            FontSize="13"
-                                                            Text="{Binding Wins, StringFormat='{0}W'}"
-                                                            TextColor="#4CAF50" />
-                                                        <Label
-                                                            FontSize="13"
-                                                            Text="{Binding Losses, StringFormat='{0}L'}"
-                                                            TextColor="#F44336" />
-                                                    </HorizontalStackLayout>
-                                                    <Label
-                                                        FontSize="13"
-                                                        Text="{Binding WinRate, StringFormat='{0}% Winrate'}"
-                                                        TextColor="White" />
-                                                </VerticalStackLayout>
-                                            </Grid>
-                                        </VerticalStackLayout>
-                                    </Border>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                        <!--  Namn och region  -->
+                        <VerticalStackLayout Spacing="8" VerticalOptions="Center">
+                            <HorizontalStackLayout Spacing="6">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="22"
+                                    Text="{Binding SummonerOverview.SummonerName}"
+                                    TextColor="White" />
+                                <Label
+                                    Margin="0,0,0,3"
+                                    FontSize="14"
+                                    Text="{Binding SummonerOverview.TagLine, StringFormat='#{0}'}"
+                                    TextColor="#8A8A9A"
+                                    VerticalOptions="End" />
+                            </HorizontalStackLayout>
+                            <Border
+                                Padding="10,4"
+                                BackgroundColor="#1E3A5F"
+                                HorizontalOptions="Start"
+                                Stroke="#2A5080"
+                                StrokeShape="RoundRectangle 6"
+                                StrokeThickness="1">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    Text="{Binding SummonerOverview.Region}"
+                                    TextColor="#5B9BD5" />
+                            </Border>
+                        </VerticalStackLayout>
                     </HorizontalStackLayout>
 
-                    <!--  Match kort  -->
-                    <VerticalStackLayout Grid.Column="1">
-                        <CollectionView
-                            ItemsSource="{Binding MatchList}"
-                            VerticalOptions="Start"
-                            WidthRequest="1000">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Border
-                                        Margin="0,0,0,8"
-                                        Padding="16,10"
-                                        BackgroundColor="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='#0F2A4A', FalseObject='#2A0F0F'}}"
-                                        HorizontalOptions="Start"
-                                        Stroke="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='#1E3A5F', FalseObject='#5F1E1E'}}"
-                                        StrokeShape="RoundRectangle 10"
-                                        StrokeThickness="1">
-                                        <Grid ColumnSpacing="16">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="120" />
-                                                <ColumnDefinition Width="60" />
-                                                <ColumnDefinition Width="100" />
-                                                <ColumnDefinition Width="150" />
-                                                <ColumnDefinition Width="300" />
-                                            </Grid.ColumnDefinitions>
+                    <!--  Rank och matcher grid  -->
+                    <Grid Margin="0,20,0,0" ColumnSpacing="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                                            <!--  Game Meta data  -->
-                                            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
-                                                <Label Text="{Binding QueueType}" TextColor="White" />
+                        <!--  Rank kort  -->
+                        <HorizontalStackLayout Grid.Column="0">
+                            <CollectionView HorizontalOptions="Start" ItemsSource="{Binding SummonerOverview.RankEntries}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border
+                                            Margin="0,0,0,12"
+                                            Padding="20"
+                                            BackgroundColor="#0F1C2E"
+                                            Stroke="#1E3A5F"
+                                            StrokeShape="RoundRectangle 12"
+                                            StrokeThickness="1"
+                                            WidthRequest="320">
+                                            <VerticalStackLayout Spacing="10">
                                                 <Label
-                                                    FontAttributes="Bold"
-                                                    FontSize="14"
-                                                    Text="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='Victory', FalseObject='Defeat'}}"
-                                                    TextColor="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='#5B9BD5', FalseObject='#F44336'}}" />
-                                                <Label
-                                                    FontSize="13"
-                                                    Text="{Binding GameDuration, StringFormat='{0} Min'}"
-                                                    TextColor="White" />
+                                                    FontSize="15"
+                                                    Text="{Binding QueueType}"
+                                                    TextColor="#8A8A9A" />
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image
+                                                        Grid.Column="0"
+                                                        Margin="0,0,12,0"
+                                                        HeightRequest="50"
+                                                        Source="{Binding ImageString}"
+                                                        WidthRequest="50" />
+                                                    <VerticalStackLayout
+                                                        Grid.Column="1"
+                                                        Spacing="4"
+                                                        VerticalOptions="Center">
+                                                        <HorizontalStackLayout Spacing="6">
+                                                            <Label
+                                                                FontAttributes="Bold"
+                                                                FontSize="18"
+                                                                Text="{Binding Tier}"
+                                                                TextColor="#C89B3C" />
+                                                            <Label
+                                                                FontAttributes="Bold"
+                                                                FontSize="18"
+                                                                Text="{Binding Rank}"
+                                                                TextColor="#C89B3C" />
+                                                        </HorizontalStackLayout>
+                                                        <Label
+                                                            FontSize="14"
+                                                            Text="{Binding LeaguePoints, StringFormat='{0} LP'}"
+                                                            TextColor="White" />
+                                                    </VerticalStackLayout>
+                                                    <VerticalStackLayout
+                                                        Grid.Column="2"
+                                                        Spacing="4"
+                                                        VerticalOptions="Center">
+                                                        <HorizontalStackLayout Spacing="8">
+                                                            <Label
+                                                                FontSize="13"
+                                                                Text="{Binding Wins, StringFormat='{0}W'}"
+                                                                TextColor="#4CAF50" />
+                                                            <Label
+                                                                FontSize="13"
+                                                                Text="{Binding Losses, StringFormat='{0}L'}"
+                                                                TextColor="#F44336" />
+                                                        </HorizontalStackLayout>
+                                                        <Label
+                                                            FontSize="13"
+                                                            Text="{Binding WinRate, StringFormat='{0}% Winrate'}"
+                                                            TextColor="White" />
+                                                    </VerticalStackLayout>
+                                                </Grid>
                                             </VerticalStackLayout>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </HorizontalStackLayout>
 
-                                            <!--  Champion bild  -->
-                                            <Image
-                                                Grid.Column="1"
-                                                HeightRequest="60"
-                                                VerticalOptions="Center"
-                                                WidthRequest="60">
-                                                <Image.Source>
-                                                    <Binding Path="TargetPlayer.ChampionName" StringFormat="ChampionIcons/{0}.png" />
-                                                </Image.Source>
-                                            </Image>
+                        <!--  Match kort  -->
+                        <VerticalStackLayout Grid.Column="1">
+                            <CollectionView
+                                ItemsSource="{Binding MatchList}"
+                                VerticalOptions="Start"
+                                WidthRequest="1000">
 
-                                            <!--  KDA  -->
-                                            <Label
-                                                Grid.Column="2"
-                                                FontAttributes="Bold"
-                                                FontSize="20"
-                                                TextColor="White"
-                                                VerticalOptions="Center">
-                                                <Label.Text>
-                                                    <MultiBinding StringFormat="{}{0} / {1} / {2}">
-                                                        <Binding Path="TargetPlayer.Kills" />
-                                                        <Binding Path="TargetPlayer.Deaths" />
-                                                        <Binding Path="TargetPlayer.Assists" />
-                                                    </MultiBinding>
-                                                </Label.Text>
-                                            </Label>
-
-                                            <!--  Items  -->
-                                            <Grid
-                                                Grid.Column="3"
-                                                ColumnSpacing="2"
-                                                RowSpacing="2"
-                                                VerticalOptions="Center">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="30" />
-                                                    <RowDefinition Height="30" />
-                                                </Grid.RowDefinitions>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border
+                                            Margin="0,0,0,8"
+                                            Padding="16,10"
+                                            BackgroundColor="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='#0F2A4A', FalseObject='#2A0F0F'}}"
+                                            HorizontalOptions="Start"
+                                            Stroke="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='#1E3A5F', FalseObject='#5F1E1E'}}"
+                                            StrokeShape="RoundRectangle 10"
+                                            StrokeThickness="1">
+                                            <Grid ColumnSpacing="16">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="30" />
-                                                    <ColumnDefinition Width="30" />
-                                                    <ColumnDefinition Width="30" />
-                                                    <ColumnDefinition Width="30" />
+                                                    <ColumnDefinition Width="120" />
+                                                    <ColumnDefinition Width="60" />
+                                                    <ColumnDefinition Width="140" />
+                                                    <ColumnDefinition Width="150" />
+                                                    <ColumnDefinition Width="300" />
                                                 </Grid.ColumnDefinitions>
 
-                                                <!--  Rad 1  -->
-                                                <Border
-                                                    Grid.Row="0"
-                                                    Grid.Column="0"
-                                                    Stroke="#4A4A5A"
-                                                    StrokeShape="RoundRectangle 3"
-                                                    StrokeThickness="1">
-                                                    <Image Source="{Binding TargetPlayer.Item0, StringFormat='ItemIcons/{0}.png'}" />
-                                                </Border>
-                                                <Border
-                                                    Grid.Row="0"
+                                                <!--  Game Meta data  -->
+                                                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                                    <Label Text="{Binding QueueType}" TextColor="White" />
+                                                    <Label
+                                                        FontAttributes="Bold"
+                                                        FontSize="14"
+                                                        Text="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='Victory', FalseObject='Defeat'}}"
+                                                        TextColor="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='#5B9BD5', FalseObject='#F44336'}}" />
+                                                    <Label
+                                                        FontSize="13"
+                                                        Text="{Binding GameDuration, StringFormat='{0} Min'}"
+                                                        TextColor="White" />
+                                                </VerticalStackLayout>
+
+                                                <!--  Champion bild  -->
+                                                <Image
                                                     Grid.Column="1"
-                                                    Stroke="#4A4A5A"
-                                                    StrokeShape="RoundRectangle 3"
-                                                    StrokeThickness="1">
-                                                    <Image Source="{Binding TargetPlayer.Item1, StringFormat='ItemIcons/{0}.png'}" />
-                                                </Border>
-                                                <Border
-                                                    Grid.Row="0"
+                                                    HeightRequest="60"
+                                                    VerticalOptions="Center"
+                                                    WidthRequest="60">
+                                                    <Image.Source>
+                                                        <Binding Path="TargetPlayer.ChampionName" StringFormat="ChampionIcons/{0}.png" />
+                                                    </Image.Source>
+                                                </Image>
+
+                                                <!--  KDA  -->
+                                                <Label
                                                     Grid.Column="2"
-                                                    Stroke="#4A4A5A"
-                                                    StrokeShape="RoundRectangle 3"
-                                                    StrokeThickness="1">
-                                                    <Image Source="{Binding TargetPlayer.Item2, StringFormat='ItemIcons/{0}.png'}" />
-                                                </Border>
-                                                <Border
-                                                    Grid.Row="0"
+                                                    FontAttributes="Bold"
+                                                    FontSize="20"
+                                                    TextColor="White"
+                                                    VerticalOptions="Center">
+                                                    <Label.Text>
+                                                        <MultiBinding StringFormat="{}{0} / {1} / {2}">
+                                                            <Binding Path="TargetPlayer.Kills" />
+                                                            <Binding Path="TargetPlayer.Deaths" />
+                                                            <Binding Path="TargetPlayer.Assists" />
+                                                        </MultiBinding>
+                                                    </Label.Text>
+                                                </Label>
+
+                                                <!--  Items  -->
+                                                <Grid
                                                     Grid.Column="3"
-                                                    Stroke="#4A4A5A"
-                                                    StrokeShape="RoundRectangle 3"
-                                                    StrokeThickness="1">
-                                                    <Image Source="{Binding TargetPlayer.Item6, StringFormat='ItemIcons/{0}.png'}" />
-                                                </Border>
-
-                                                <!--  Rad 2  -->
-                                                <Border
-                                                    Grid.Row="1"
-                                                    Grid.Column="0"
-                                                    Stroke="#4A4A5A"
-                                                    StrokeShape="RoundRectangle 3"
-                                                    StrokeThickness="1">
-                                                    <Image Source="{Binding TargetPlayer.Item3, StringFormat='ItemIcons/{0}.png'}" />
-                                                </Border>
-                                                <Border
-                                                    Grid.Row="1"
-                                                    Grid.Column="1"
-                                                    Stroke="#4A4A5A"
-                                                    StrokeShape="RoundRectangle 3"
-                                                    StrokeThickness="1">
-                                                    <Image Source="{Binding TargetPlayer.Item4, StringFormat='ItemIcons/{0}.png'}" />
-                                                </Border>
-                                                <Border
-                                                    Grid.Row="1"
-                                                    Grid.Column="2"
-                                                    Stroke="#4A4A5A"
-                                                    StrokeShape="RoundRectangle 3"
-                                                    StrokeThickness="1">
-                                                    <Image Source="{Binding TargetPlayer.Item5, StringFormat='ItemIcons/{0}.png'}" />
-                                                </Border>
-                                            </Grid>
-                                            <!--  Players  -->
-                                            <Grid
-                                                Grid.Column="4"
-                                                ColumnSpacing="16"
-                                                VerticalOptions="Center">
-
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="140" />
-                                                    <ColumnDefinition Width="140" />
-                                                </Grid.ColumnDefinitions>
-                                                <!--  Team 1  -->
-                                                <CollectionView
-                                                    Grid.Column="0"
-                                                    ItemsSource="{Binding Team1Players}"
-                                                    SelectionChangedCommand="{Binding Source={x:Reference ThisPage}, Path=BindingContext.NavigateToPlayerCommand}"
-                                                    SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}"
-                                                    SelectionMode="Single"
+                                                    ColumnSpacing="2"
+                                                    RowSpacing="2"
                                                     VerticalOptions="Center">
-                                                    <CollectionView.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <HorizontalStackLayout Spacing="4">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="30" />
+                                                        <RowDefinition Height="30" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="30" />
+                                                        <ColumnDefinition Width="30" />
+                                                        <ColumnDefinition Width="30" />
+                                                        <ColumnDefinition Width="30" />
+                                                    </Grid.ColumnDefinitions>
 
-                                                                <Image
-                                                                    HeightRequest="20"
-                                                                    Source="{Binding ChampionName, StringFormat='ChampionIcons/{0}.png'}"
-                                                                    WidthRequest="20" />
-                                                                <Label
-                                                                    FontSize="11"
-                                                                    Text="{Binding GameName}"
-                                                                    TextColor="{Binding IsTargetPlayer, Converter={toolkit:BoolToObjectConverter TrueObject='White', FalseObject='#8A8A9A'}}"
-                                                                    VerticalOptions="Center" />
-                                                            </HorizontalStackLayout>
-                                                        </DataTemplate>
-                                                    </CollectionView.ItemTemplate>
-                                                </CollectionView>
+                                                    <!--  Rad 1  -->
+                                                    <Border
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Stroke="#4A4A5A"
+                                                        StrokeShape="RoundRectangle 3"
+                                                        StrokeThickness="1">
+                                                        <Image Source="{Binding TargetPlayer.Item0, StringFormat='ItemIcons/{0}.png'}" />
+                                                    </Border>
+                                                    <Border
+                                                        Grid.Row="0"
+                                                        Grid.Column="1"
+                                                        Stroke="#4A4A5A"
+                                                        StrokeShape="RoundRectangle 3"
+                                                        StrokeThickness="1">
+                                                        <Image Source="{Binding TargetPlayer.Item1, StringFormat='ItemIcons/{0}.png'}" />
+                                                    </Border>
+                                                    <Border
+                                                        Grid.Row="0"
+                                                        Grid.Column="2"
+                                                        Stroke="#4A4A5A"
+                                                        StrokeShape="RoundRectangle 3"
+                                                        StrokeThickness="1">
+                                                        <Image Source="{Binding TargetPlayer.Item2, StringFormat='ItemIcons/{0}.png'}" />
+                                                    </Border>
+                                                    <Border
+                                                        Grid.Row="0"
+                                                        Grid.Column="3"
+                                                        Stroke="#4A4A5A"
+                                                        StrokeShape="RoundRectangle 3"
+                                                        StrokeThickness="1">
+                                                        <Image Source="{Binding TargetPlayer.Item6, StringFormat='ItemIcons/{0}.png'}" />
+                                                    </Border>
 
-                                                <!--  Team 2  -->
-                                                <CollectionView
-                                                    Grid.Column="1"
-                                                    ItemsSource="{Binding Team2Players}"
-                                                    SelectionChangedCommand="{Binding Source={x:Reference ThisPage}, Path=BindingContext.NavigateToPlayerCommand}"
-                                                    SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}"
-                                                    SelectionMode="Single"
+                                                    <!--  Rad 2  -->
+                                                    <Border
+                                                        Grid.Row="1"
+                                                        Grid.Column="0"
+                                                        Stroke="#4A4A5A"
+                                                        StrokeShape="RoundRectangle 3"
+                                                        StrokeThickness="1">
+                                                        <Image Source="{Binding TargetPlayer.Item3, StringFormat='ItemIcons/{0}.png'}" />
+                                                    </Border>
+                                                    <Border
+                                                        Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        Stroke="#4A4A5A"
+                                                        StrokeShape="RoundRectangle 3"
+                                                        StrokeThickness="1">
+                                                        <Image Source="{Binding TargetPlayer.Item4, StringFormat='ItemIcons/{0}.png'}" />
+                                                    </Border>
+                                                    <Border
+                                                        Grid.Row="1"
+                                                        Grid.Column="2"
+                                                        Stroke="#4A4A5A"
+                                                        StrokeShape="RoundRectangle 3"
+                                                        StrokeThickness="1">
+                                                        <Image Source="{Binding TargetPlayer.Item5, StringFormat='ItemIcons/{0}.png'}" />
+                                                    </Border>
+                                                </Grid>
+                                                <!--  Players  -->
+                                                <Grid
+                                                    Grid.Column="4"
+                                                    ColumnSpacing="16"
                                                     VerticalOptions="Center">
-                                                    <CollectionView.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <HorizontalStackLayout Spacing="4">
 
-                                                                <Image
-                                                                    HeightRequest="20"
-                                                                    Source="{Binding ChampionName, StringFormat='ChampionIcons/{0}.png'}"
-                                                                    WidthRequest="20" />
-                                                                <Label
-                                                                    FontSize="11"
-                                                                    Text="{Binding GameName}"
-                                                                    TextColor="{Binding IsTargetPlayer, Converter={toolkit:BoolToObjectConverter TrueObject='White', FalseObject='#8A8A9A'}}"
-                                                                    VerticalOptions="Center" />
-                                                            </HorizontalStackLayout>
-                                                        </DataTemplate>
-                                                    </CollectionView.ItemTemplate>
-                                                </CollectionView>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="140" />
+                                                        <ColumnDefinition Width="140" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <!--  Team 1  -->
+                                                    <CollectionView
+                                                        Grid.Column="0"
+                                                        ItemsSource="{Binding Team1Players}"
+                                                        SelectionChangedCommand="{Binding Source={x:Reference ThisPage}, Path=BindingContext.NavigateToPlayerCommand}"
+                                                        SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}"
+                                                        SelectionMode="Single"
+                                                        VerticalOptions="Center">
+                                                        <CollectionView.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <HorizontalStackLayout Spacing="4">
+
+                                                                    <Image
+                                                                        HeightRequest="20"
+                                                                        Source="{Binding ChampionName, StringFormat='ChampionIcons/{0}.png'}"
+                                                                        WidthRequest="20" />
+                                                                    <Label
+                                                                        FontSize="11"
+                                                                        Text="{Binding GameName}"
+                                                                        TextColor="{Binding IsTargetPlayer, Converter={toolkit:BoolToObjectConverter TrueObject='White', FalseObject='#8A8A9A'}}"
+                                                                        VerticalOptions="Center" />
+                                                                </HorizontalStackLayout>
+                                                            </DataTemplate>
+                                                        </CollectionView.ItemTemplate>
+                                                    </CollectionView>
+
+                                                    <!--  Team 2  -->
+                                                    <CollectionView
+                                                        Grid.Column="1"
+                                                        ItemsSource="{Binding Team2Players}"
+                                                        SelectionChangedCommand="{Binding Source={x:Reference ThisPage}, Path=BindingContext.NavigateToPlayerCommand}"
+                                                        SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}"
+                                                        SelectionMode="Single"
+                                                        VerticalOptions="Center">
+                                                        <CollectionView.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <HorizontalStackLayout Spacing="4">
+
+                                                                    <Image
+                                                                        HeightRequest="20"
+                                                                        Source="{Binding ChampionName, StringFormat='ChampionIcons/{0}.png'}"
+                                                                        WidthRequest="20" />
+                                                                    <Label
+                                                                        FontSize="11"
+                                                                        Text="{Binding GameName}"
+                                                                        TextColor="{Binding IsTargetPlayer, Converter={toolkit:BoolToObjectConverter TrueObject='White', FalseObject='#8A8A9A'}}"
+                                                                        VerticalOptions="Center" />
+                                                                </HorizontalStackLayout>
+                                                            </DataTemplate>
+                                                        </CollectionView.ItemTemplate>
+                                                    </CollectionView>
+                                                </Grid>
                                             </Grid>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </VerticalStackLayout>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                            <ActivityIndicator
+                                HorizontalOptions="Center"
+                                IsRunning="{Binding IsLoadingMoreMatches}"
+                                IsVisible="{Binding IsLoadingMoreMatches}"
+                                Color="#C89B3C" />
+                            <Label Text="{Binding LoadMatchError}" TextColor="Red" />
+                            <Button
+                                Margin="0,8,0,0"
+                                BackgroundColor="#1E3A5F"
+                                Command="{Binding LoadMoreMatchesCommand}"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding IsLoadingMoreMatches, Converter={toolkit:InvertedBoolConverter}}"
+                                Text="Visa mer matcher"
+                                TextColor="White" />
+                        </VerticalStackLayout>
 
-                </Grid>
-            </VerticalStackLayout>
-        </Grid>
-        <!--  Loading  -->
-        <ActivityIndicator
-            IsRunning="{Binding IsLoading}"
-            IsVisible="{Binding IsLoading}"
-            Color="#C89B3C" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Grid>
+            <!--  Loading  -->
+            <ActivityIndicator
+                IsRunning="{Binding IsLoading}"
+                IsVisible="{Binding IsLoading}"
+                Color="#C89B3C" />
+        </VerticalStackLayout>
 
 
-    </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

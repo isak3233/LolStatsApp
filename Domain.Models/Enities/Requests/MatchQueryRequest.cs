@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain.Models.Entities.Requests
 {
-    public class MatchQueryRequest
+    public record MatchQueryRequest
     {
         public string Uuid { get; set; }
         public string Region { get; set; }
@@ -13,6 +13,6 @@ namespace Domain.Models.Entities.Requests
         public int? Queue { get; set; }
         public string? Type { get; set; }
         public int? Start { get; set; }
-        public int Count { get; set; } = 20;
+        public int Count { get; set; } = 0;
     }
 }
