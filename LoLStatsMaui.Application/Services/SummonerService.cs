@@ -1,6 +1,7 @@
 ﻿using Domain.Models.Enities.Requests;
 using Domain.Models.Entities;
 using Domain.Models.Interfaces;
+using LoLStatsMaui.Application.Interfaces;
 using LoLStatsMaui.Infrastructure.Constants;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace LoLStatsMaui.Application.Services
 {
-    public class SummonerService
+    public class SummonerService : ISummonerService
     {
         private readonly ILolRepository _lolRepository;
 

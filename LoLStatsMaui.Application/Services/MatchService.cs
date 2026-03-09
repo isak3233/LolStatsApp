@@ -2,6 +2,7 @@
 using Domain.Models.Entities.Requests;
 using Domain.Models.EntitiesDto;
 using Domain.Models.Interfaces;
+using LoLStatsMaui.Application.Interfaces;
 using LoLStatsMaui.Infrastructure.Constants;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace LoLStatsMaui.Application.Services
 {
-    public class MatchService
+    public class MatchService : IMatchService
     {
         private readonly ILolRepository _lolRepository;
 

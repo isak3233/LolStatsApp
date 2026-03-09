@@ -1,12 +1,13 @@
 ﻿using Domain.Models.Enities.Requests;
 using Domain.Models.Interfaces;
+using LoLStatsMaui.Application.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LoLStatsMaui.Application.Services
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
         private readonly ILolRepository _lolRepository;
 
