@@ -10,11 +10,11 @@ namespace LoLStatsMaui.Application.Facade
 {
     public class LolFacade : ILolFacade
     {
-        private readonly AccountService _accountService;
-        private readonly SummonerService _summonerService;
-        private readonly MatchService _matchService;
+        private readonly IAccountService _accountService;
+        private readonly ISummonerService _summonerService;
+        private readonly IMatchService _matchService;
 
-        public LolFacade(AccountService accountService, SummonerService summonerService, MatchService matchService)
+        public LolFacade(IAccountService accountService, ISummonerService summonerService, IMatchService matchService)
         {
             _accountService = accountService;
             _summonerService = summonerService;
