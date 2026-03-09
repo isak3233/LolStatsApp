@@ -12,7 +12,7 @@ namespace Domain.Models.Entities
         public string Region { get; set; }
         public string RawRegion { get; set; }
         public long Level { get; set; }
-        public int ProfileIconId { get; set; }
+        public string ProfileIconString { get; set; }
         public List<RankEntry> RankEntries { get; set; }
     }
 }

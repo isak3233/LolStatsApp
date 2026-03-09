@@ -363,3 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 Resources/Raw/ProfileIcons
 **/Resources/Raw/ProfileIcons/
+**/Resources/Raw/ItemIcons/
+**/Resources/Raw/ChampionIcons/
+**/Resources/Raw/RankIcons/

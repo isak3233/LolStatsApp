@@ -1,4 +1,5 @@
-﻿using Domain.Models.Entities;
+﻿using Domain.Models.Enities;
+using Domain.Models.Entities;
 using Domain.Models.Entities.Dto;
 using Domain.Models.EntitiesDto;
 using System;
@@ -14,6 +15,28 @@ namespace LoLStatsMaui.Infrastructure.Constants
         {
             { "RANKED_SOLO_5x5", "Ranked Solo/Duo" },
             { "RANKED_FLEX_SR", "Ranked Flex" }
+        };
+        public static readonly Dictionary<int, string> QueueIdMap = new()
+        {
+            //https://static.developer.riotgames.com/docs/lol/queues.json INFO
+            { 420, "Ranked Solo/Duo" },
+            { 440, "Ranked Flex" },
+            { 2400, "ARAM: Mayhem" },
+            { 100, "ARAM" },
+            { 450, "ARAM" },
+            { 2300, "BRAWL" },
+            { 1700, "ARENA"},
+            { 1710, "ARENA"},
+            { 870, "Co-op vs Ai"},
+            { 880, "Co-op vs Ai"},
+            { 890, "Co-op vs Ai"},
+            { 900,  "ARURF"},
+            { 700,  "CLASH"},
+            { 720, "CLASH" },
+            { 490, "Normal" },
+            { 480, "Swiftplay" },
+            { 430, "Blind Pick" },
+            
         };
 
         public static readonly Dictionary<string, string> RegionMap = new()
@@ -60,6 +83,10 @@ namespace LoLStatsMaui.Infrastructure.Constants
         {
             return QueueTypeMap.TryGetValue(queueType, out var readable) ? readable : queueType;
         }
+        public static string GetQueueType(int queueId)
+        {
+            return QueueIdMap.TryGetValue(queueId, out var readable) ? readable : "Gamemode";
+        }
         public static List<RankEntry> GetRankEntries(List<RankEntryDto> rankEntriesDto)
         {
             List<RankEntry> rankEntries = new List<RankEntry>
@@ -95,11 +122,40 @@ namespace LoLStatsMaui.Infrastructure.Constants
         }
         public static LolMatch Map(LolMatchDto dto, string puuid)
         {
-            var participant = dto.Info.Participants.First(p => p.Puuid == puuid);
+            var targetPlayer = MapPlayer(dto.Info.Participants.First(p => p.Puuid == puuid));
             return new LolMatch
             {
+                TargetPlayer = targetPlayer,
+                Players = dto.Info.Participants.Select(p => MapPlayer(p, targetPlayer)).ToList(),
+                QueueType = GetQueueType(dto.Info.QueueId),
+                GameDuration = (int)(dto.Info.GameDuration / 60),
+            };
+        }
+        
+        private static LolMatchPlayer MapPlayer(ParticipantDto participant, LolMatchPlayer? targetPlayer = null)
+        {
+            return new LolMatchPlayer
+            {
+                IsTargetPlayer = targetPlayer?.GameName == participant.RiotIdGameName,
+                GameName = participant.RiotIdGameName,
+                TagLine = participant.RiotIdTagline,
                 Win = participant.Win,
                 ChampLevel = participant.ChampLevel,
+                Assists = participant.Assists,
+                ChampionId = participant.ChampionId,
+                ChampionName = participant.ChampionName,
+                ChampionTransform = participant.ChampionTransform,
+                Deaths = participant.Deaths,
+                Item0 = participant.Item0,
+                Item1 = participant.Item1,
+                Item2 = participant.Item2,
+                Item3 = participant.Item3,
+                Item4 = participant.Item4,
+                Item5 = participant.Item5,
+                Item6 = participant.Item6,
+                Kills = participant.Kills,
+                TeamId = participant.TeamId,
+                TeamPosition = participant.TeamPosition
             };
         }
 

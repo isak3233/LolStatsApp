@@ -65,7 +65,7 @@ namespace LoLStatsMaui.Application.Services
                 SummonerName = accountMetaData.GameName,
                 TagLine = accountMetaData.TagLine,
                 Level = summonerData.summonerLevel,
-                ProfileIconId = summonerData.profileIconId,
+                ProfileIconString = $"ProfileIcons/{summonerData.profileIconId}.png",
                 Region = RiotMapper.GetRegion(accountMetaData.Region),
                 RawRegion = accountMetaData.Region,
                 RankEntries = RiotMapper.GetRankEntries(rankEntries),

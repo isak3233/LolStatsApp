@@ -1,11 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Domain.Models.Enities;
 using Domain.Models.Enities.Requests;
 using Domain.Models.Entities;
 using Domain.Models.Entities.Requests;
 using Domain.Models.Interfaces;
 using LoLStatsMaui.Application.Interfaces;
 using LoLStatsMaui.Domain.Exceptions;
+using LoLStatsMaui.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,17 +33,20 @@ namespace LoLStatsMaui.ViewModels
         private ObservableCollection<LolMatch> _matchList = new();
 
         [ObservableProperty]
-        private ImageSource _profileImage;
+        private string _errorMessage;
 
         [ObservableProperty]
-        private string _errorMessage;
+        private bool _isLoading;
 
         [ObservableProperty]
         private bool _hasError;
 
+        public bool ShowContent => !HasError && !IsLoading;
+
+        partial void OnHasErrorChanged(bool value) => OnPropertyChanged(nameof(ShowContent));
+        partial void OnIsLoadingChanged(bool value) => OnPropertyChanged(nameof(ShowContent));
         public LolAccountOverViewModel(ILolService lolService)
         {
-            ProfileImage = ImageSource.FromFile("none.png");
             _lolService = lolService;
             SummonerOverview = new SummonerOverview();
 
@@ -59,6 +64,7 @@ namespace LoLStatsMaui.ViewModels
         }
         private async Task LoadPageAsync()
         {
+            IsLoading = true;
             try
             {
                 await LoadLolProfile();
@@ -89,6 +95,7 @@ namespace LoLStatsMaui.ViewModels
                 return;
             } finally
             {
+                IsLoading = false;
                 HasError = true;
             }
             HasError = false;
@@ -98,11 +105,17 @@ namespace LoLStatsMaui.ViewModels
         {
             var profile = await _lolService.GetLolProfileAsync(LolName);
             SummonerOverview = profile.SummonerOverview;
-            ProfileImage = ImageSource.FromFile($"ProfileIcons/{SummonerOverview.ProfileIconId}.png");
             MatchList = new ObservableCollection<LolMatch>(profile.Matches);
         }
 
-        
+        [RelayCommand]
+        private async Task NavigateToPlayer(LolMatchPlayer player)
+        {
+            if (player == null || player.IsTargetPlayer) return;
+            await Shell.Current.GoToAsync($"{nameof(LolAccountOverviewPage)}?lolName={Uri.EscapeDataString(player.FullLolName)}");
+        }
+
+
 
     }
 }
