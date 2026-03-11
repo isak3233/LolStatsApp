@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Models.Entities
+namespace Domain.Models.Enities.LolEnities
 {
     public class SummonerOverview
     {

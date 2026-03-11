@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LoLStatsMaui.Views.CreateUserPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#0A1428">
+    <Grid RowDefinitions="Auto, *">
+        <Label
+            Grid.Row="0"
+            Margin="0,40,0,0"
+            FontSize="50"
+            HorizontalOptions="Center"
+            Text="Skapa användare"
+            TextColor="White"
+            VerticalOptions="Start" />
+
+        <VerticalStackLayout
+            Grid.Row="1"
+            HorizontalOptions="Center"
+            Spacing="12"
+            VerticalOptions="Center">
+
+            <Entry
+                BackgroundColor="White"
+                Placeholder="Användarnamn"
+                Text="{Binding Username}"
+                WidthRequest="500" />
+
+            <Entry
+                BackgroundColor="White"
+                IsPassword="True"
+                Placeholder="Lösenord"
+                Text="{Binding Password}"
+                WidthRequest="500" />
+
+            <Button
+                Command="{Binding CreateUserCommand}"
+                Text="Skapa"
+                TextColor="White"
+                WidthRequest="500" />
+
+            <Label
+                FontSize="16"
+                HorizontalOptions="Center"
+                Text="{Binding ErrorMessage}"
+                TextColor="Red" />
+            <Label
+                FontSize="16"
+                Text="{Binding UserCreatedMessage}"
+                TextColor="White" />
+
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

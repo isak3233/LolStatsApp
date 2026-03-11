@@ -8,6 +8,8 @@ namespace LoLStatsMaui
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(LolAccountOverviewPage), typeof(LolAccountOverviewPage));
+            Routing.RegisterRoute(nameof(CreateUserPage), typeof(CreateUserPage));
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
         }
     }
 }

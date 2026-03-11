@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 
 namespace LoLStatsMaui.Infrastructure.Repositories
 {
-    public class LolApiRepository : ILolRepository
+    public class LolApiRepository : ILolApiRepository
     {
         private readonly HttpClient _httpClient;
 

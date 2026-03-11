@@ -1,5 +1,4 @@
-﻿using Domain.Models.Enities;
-using Domain.Models.Entities;
+﻿using Domain.Models.Enities.LolEnities;
 using Domain.Models.Entities.Dto;
 using Domain.Models.EntitiesDto;
 using System;
@@ -33,9 +32,10 @@ namespace LoLStatsMaui.Infrastructure.Constants
             { 900,  "ARURF"},
             { 700,  "CLASH"},
             { 720, "CLASH" },
-            { 490, "Normal" },
+            { 490, "Normal Quickplay" },
             { 480, "Swiftplay" },
             { 430, "Blind Pick" },
+            { 400, "Normal"},
             
         };
 

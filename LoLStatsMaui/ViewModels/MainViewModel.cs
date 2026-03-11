@@ -1,5 +1,7 @@
 ﻿
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using LoLStatsMaui.Application.Interfaces;
 using LoLStatsMaui.Views;
 using System;
 using System.Collections.Generic;
@@ -13,8 +15,12 @@ namespace LoLStatsMaui.ViewModels
     public partial class MainViewModel : ObservableObject
     {
         public ICommand SubmitCommand { get; }
+        private IUserFacade _userFacade;
 
-
+        [ObservableProperty]
+        private string _loginBtnText;
+        [ObservableProperty]
+        private bool _showRegisterBtn;
         [ObservableProperty]
         private string _errorMessage;
 
@@ -22,10 +28,25 @@ namespace LoLStatsMaui.ViewModels
         private string _lolName;
 
 
-        public MainViewModel()
+
+
+        public MainViewModel(IUserFacade userFacade)
         {
             SubmitCommand = new Command(OnSubmit);
-           
+            _userFacade = userFacade;
+        }
+        public void UpdatePage()
+        {
+            if (_userFacade.IsLoggedIn)
+            {
+                LoginBtnText = "Logga ut";
+                ShowRegisterBtn = false;
+            }
+            else
+            {
+                LoginBtnText = "Logga in";
+                ShowRegisterBtn = true;
+            }
         }
         private async void OnSubmit()
         {
@@ -52,6 +73,24 @@ namespace LoLStatsMaui.ViewModels
             ErrorMessage = "";
             await Shell.Current.GoToAsync($"{nameof(LolAccountOverviewPage)}?lolName={Uri.EscapeDataString(LolName)}");
 
+        }
+        [RelayCommand]
+        private async Task NavigateToCreateUser()
+        {
+            await Shell.Current.GoToAsync(nameof(CreateUserPage));
+        }
+        [RelayCommand]
+        private async Task NavigateToLogin()
+        {
+            if(_userFacade.IsLoggedIn)
+            {
+                _userFacade.Logout();
+                UpdatePage();
+            } else
+            {
+                await Shell.Current.GoToAsync(nameof(LoginPage));
+            }
+            
         }
 
     }

@@ -9,9 +9,9 @@ namespace LoLStatsMaui.Application.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly ILolRepository _lolRepository;
+        private readonly ILolApiRepository _lolRepository;
 
-        public AccountService(ILolRepository lolRepository)
+        public AccountService(ILolApiRepository lolRepository)
         {
             _lolRepository = lolRepository;
         }

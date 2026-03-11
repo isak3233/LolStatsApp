@@ -1,4 +1,4 @@
-﻿using Domain.Models.Entities;
+﻿using Domain.Models.Enities.LolEnities;
 using Domain.Models.Entities.Requests;
 using Domain.Models.EntitiesDto;
 using Domain.Models.Interfaces;
@@ -12,9 +12,9 @@ namespace LoLStatsMaui.Application.Services
 {
     public class MatchService : IMatchService
     {
-        private readonly ILolRepository _lolRepository;
+        private readonly ILolApiRepository _lolRepository;
 
-        public MatchService(ILolRepository lolRepository)
+        public MatchService(ILolApiRepository lolRepository)
         {
             _lolRepository = lolRepository;
         }

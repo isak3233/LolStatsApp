@@ -1,5 +1,4 @@
-﻿using Domain.Models.Enities;
-using Domain.Models.Entities;
+﻿using Domain.Models.Enities.LolEnities;
 using Domain.Models.Entities.Requests;
 using System;
 using System.Collections.Generic;

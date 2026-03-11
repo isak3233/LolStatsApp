@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LoLStatsMaui.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#0A1428">
+    <Grid RowDefinitions="Auto, *">
+        <Label
+            Grid.Row="0"
+            FontSize="75"
+            HorizontalOptions="Center"
+            Text="LoLStats"
+            TextColor="White"
+            VerticalOptions="Start" />
+
+        <VerticalStackLayout
+            Grid.Row="1"
+            HorizontalOptions="Center"
+            Spacing="12"
+            VerticalOptions="Center">
+
+            <Label
+                FontAttributes="Bold"
+                FontSize="30"
+                HorizontalOptions="Center"
+                Text="Logga in"
+                TextColor="White" />
+
+            <Entry
+                BackgroundColor="White"
+                Placeholder="Användarnamn"
+                Text="{Binding Username}"
+                WidthRequest="500" />
+
+            <Entry
+                BackgroundColor="White"
+                IsPassword="True"
+                Placeholder="Lösenord"
+                Text="{Binding Password}"
+                WidthRequest="500" />
+
+            <Button
+                Command="{Binding LoginCommand}"
+                Text="Logga in"
+                WidthRequest="500" />
+
+            <Label
+                FontSize="16"
+                HorizontalOptions="Center"
+                Text="{Binding ErrorMessage}"
+                TextColor="Red" />
+            <Label
+                FontSize="16"
+                Text="{Binding LoggedInMessage}"
+                TextColor="White" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

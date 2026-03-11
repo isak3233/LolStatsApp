@@ -5,11 +5,19 @@ namespace LoLStatsMaui
     public partial class MainPage : ContentPage
     {
 
-        public MainPage()
+        public MainPage(MainViewModel viewModel)
         {
             InitializeComponent();
-            BindingContext = new MainViewModel();
-
+            BindingContext = viewModel;
+        }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            if (BindingContext is MainViewModel vm)
+            {
+                vm.UpdatePage();
+            }
+                
         }
 
     }

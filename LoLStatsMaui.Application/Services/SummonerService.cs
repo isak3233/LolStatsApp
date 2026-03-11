@@ -1,5 +1,5 @@
-﻿using Domain.Models.Enities.Requests;
-using Domain.Models.Entities;
+﻿using Domain.Models.Enities.LolEnities;
+using Domain.Models.Enities.Requests;
 using Domain.Models.Interfaces;
 using LoLStatsMaui.Application.Interfaces;
 using LoLStatsMaui.Infrastructure.Constants;
@@ -11,9 +11,9 @@ namespace LoLStatsMaui.Application.Services
 {
     public class SummonerService : ISummonerService
     {
-        private readonly ILolRepository _lolRepository;
+        private readonly ILolApiRepository _lolRepository;
 
-        public SummonerService(ILolRepository lolRepository)
+        public SummonerService(ILolApiRepository lolRepository)
         {
             _lolRepository = lolRepository;
         }

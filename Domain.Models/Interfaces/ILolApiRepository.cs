@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 namespace Domain.Models.Interfaces
 {
-    public interface ILolRepository
+    public interface ILolApiRepository
     {
         Task<LolAccountDto> GetLolAccount(string gameName, string tagLine);
         Task<AccountRegionDto> GetAccountRegion(string puuid);

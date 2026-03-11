@@ -85,9 +85,22 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Domain.Models\Domain.Models.csproj" />
 	  <ProjectReference Include="..\LoLStatsMaui.Application\LoLStatsMaui.Application.csproj" />
+	  <ProjectReference Include="..\LoLStatsMaui.Infrastructure\LoLStatsMaui.Infrastructure.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\CreateUserPage.xaml.cs">
+	    <DependentUpon>CreateUserPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\CreateUserPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\LolAccountOverviewPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Domain.Models.Enities;
+using Domain.Models.Enities.LolEnities;
 using Domain.Models.Enities.Requests;
-using Domain.Models.Entities;
 using Domain.Models.Entities.Requests;
 using Domain.Models.Exceptions;
 using Domain.Models.Interfaces;
@@ -136,7 +135,6 @@ namespace LoLStatsMaui.ViewModels
                     Region = SummonerOverview.RawRegion,
                     Start = _matchRequest.Start + 10,
                 };
-                Debug.WriteLine(_matchRequest.Count);
                 var matches = await _lolService.GetLolMatches(_matchRequest);
                 foreach (var match in matches)
                 {

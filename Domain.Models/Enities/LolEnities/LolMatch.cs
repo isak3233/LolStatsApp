@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Domain.Models.Enities;
 
-namespace Domain.Models.Entities
+namespace Domain.Models.Enities.LolEnities
 {
     public class LolMatch
     {
