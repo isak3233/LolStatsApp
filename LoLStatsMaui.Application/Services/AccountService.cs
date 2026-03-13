@@ -18,6 +18,10 @@ namespace LoLStatsMaui.Application.Services
 
         public async Task<LolAccountMetaData> GetLolAccountMetaData(string lolName)
         {
+            if(string.IsNullOrEmpty(lolName) || !(lolName.Count(c => c == '#') == 1) || lolName.Split('#')[0].Length < 4 || lolName.Split('#')[1].Length < 3)
+            {
+                throw new ArgumentException();
+            }
             string[] splitName = lolName.Split('#');
             string gameName = splitName[0];
             string tagLine = splitName[1];

@@ -71,6 +71,7 @@ namespace LoLStatsMaui.Infrastructure.Constants
             { "tw2", "sea" },
             { "vn2", "sea" }
         };
+        public static readonly int[] StartingIconIds = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 };
         public static string GetRouting(string region)
         {
             return RegionToRoutingMap.TryGetValue(region.ToLower(), out var routing) ? routing : "europe";

@@ -1,5 +1,6 @@
 ﻿using Domain.Models.Enities.LolEnities;
 using Domain.Models.Enities.Requests;
+using Domain.Models.Entities.Dto;
 using Domain.Models.Interfaces;
 using LoLStatsMaui.Application.Interfaces;
 using LoLStatsMaui.Infrastructure.Constants;
@@ -17,7 +18,10 @@ namespace LoLStatsMaui.Application.Services
         {
             _lolRepository = lolRepository;
         }
-
+        public async Task<SummonerDto> GetSummonerDto(LolAccountMetaData accountMetaData)
+        {
+            return await _lolRepository.GetSummoner(accountMetaData.Puuid, accountMetaData.Region);
+        }
         public async Task<SummonerOverview> GetSummonerOverviewAsync(LolAccountMetaData accountMetaData)
         {
             var summonerDataTask = _lolRepository.GetSummoner(accountMetaData.Puuid, accountMetaData.Region);

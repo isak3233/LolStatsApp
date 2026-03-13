@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LoLStatsMaui.Views.LinkAccountPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#0A1428">
+    <Grid
+        RowDefinitions="Auto, Auto, Auto, Auto"
+        RowSpacing="12"
+        VerticalOptions="Center">
+
+        <Label
+            Grid.Row="0"
+            FontAttributes="Bold"
+            FontSize="30"
+            HorizontalOptions="Center"
+            Text="Länka ditt LoL konto"
+            TextColor="White" />
+
+        <HorizontalStackLayout
+            Grid.Row="1"
+            HorizontalOptions="Center"
+            Spacing="8">
+            <Entry
+                BackgroundColor="White"
+                Placeholder="Gamename#Tagline"
+                Text="{Binding LolName}"
+                WidthRequest="500" />
+            <Button Command="{Binding FindAccountCommand}" Text="Hitta konto" />
+        </HorizontalStackLayout>
+
+
+
+        <VerticalStackLayout
+            Grid.Row="3"
+            HorizontalOptions="Center"
+            IsVisible="{Binding AccountFound}"
+            Spacing="12">
+
+            <Label
+                FontSize="16"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center"
+                Text="Konto hittades! För att verifiera att du äger kontot behöver du byta din profilbild i League of Legends till bilden nedan. Tryck sedan på Verifiera konto."
+                TextColor="White" />
+
+            <Image
+                HeightRequest="100"
+                HorizontalOptions="Center"
+                Source="{Binding ProfileIconString}"
+                WidthRequest="100" />
+
+            <Button
+                Command="{Binding VerifyAccountCommand}"
+                HorizontalOptions="Center"
+                Text="Verifiera konto" />
+            <Label
+                FontSize="16"
+                HorizontalOptions="Center"
+                Text="{Binding ErrorMessage}"
+                TextColor="Red" />
+            <Label
+                FontSize="20"
+                HorizontalOptions="Center"
+                Text="{Binding VerifiedMessage}"
+                TextColor="White" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

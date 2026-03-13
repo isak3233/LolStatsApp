@@ -10,5 +10,7 @@ namespace Domain.Models.Interfaces
         public Task CreateUserAsync(User user);
         Task<bool> UsernameExistsAsync(string username);
         Task<User?> GetUserByUsernameAsync(string username);
+        Task UpdateUserAsync(User user);
+        Task<bool> IsLolAccountLinkedAsync(string puuid);
     }
 }

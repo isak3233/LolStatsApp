@@ -20,7 +20,7 @@ namespace LoLStatsMaui.ViewModels
         [ObservableProperty]
         private string _loginBtnText;
         [ObservableProperty]
-        private bool _showRegisterBtn;
+        private bool _isLoggedIn;
         [ObservableProperty]
         private string _errorMessage;
 
@@ -40,12 +40,12 @@ namespace LoLStatsMaui.ViewModels
             if (_userFacade.IsLoggedIn)
             {
                 LoginBtnText = "Logga ut";
-                ShowRegisterBtn = false;
+                IsLoggedIn = true;
             }
             else
             {
                 LoginBtnText = "Logga in";
-                ShowRegisterBtn = true;
+                IsLoggedIn = false;
             }
         }
         private async void OnSubmit()
@@ -93,5 +93,10 @@ namespace LoLStatsMaui.ViewModels
             
         }
 
+        [RelayCommand]
+        private async Task NavigateToLinkAccount()
+        {
+            await Shell.Current.GoToAsync(nameof(LinkAccountPage));
+        }
     }
 }

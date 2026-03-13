@@ -8,7 +8,17 @@
     <Grid RowDefinitions="Auto, *">
 
         <HorizontalStackLayout
-            Grid.Row="0"
+            Margin="16,16,0,0"
+            HorizontalOptions="Start"
+            VerticalOptions="Start">
+            <Button
+                Command="{Binding NavigateToLinkAccountCommand}"
+                IsVisible="{Binding IsLoggedIn}"
+                Text="Länka ett LoL konto"
+                TextColor="White" />
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout
             Margin="0,16,16,0"
             HorizontalOptions="End"
             Spacing="8"
@@ -19,7 +29,7 @@
                 TextColor="White" />
             <Button
                 Command="{Binding NavigateToCreateUserCommand}"
-                IsVisible="{Binding ShowRegisterBtn}"
+                IsVisible="{Binding IsLoggedIn, Converter={toolkit:InvertedBoolConverter}}"
                 Text="Registrera användare"
                 TextColor="White" />
         </HorizontalStackLayout>

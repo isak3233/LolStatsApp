@@ -48,6 +48,9 @@ namespace LoLStatsMaui
             //Kör facade här så att vi sätter ihop UserService och CurrentUserService så att våran ui kan bara kalla på (exempel) CreateUser och sen tar våran facade hand om att skapa kontot och sedan logga in användaren. 
             builder.Services.AddScoped<IUserFacade, UserFacade>();
 
+            // Samma anleding som innan. Göra så att våran ui kan använda en service
+            builder.Services.AddScoped<ILinkLolAccountFacade, LinkLolAccountFacade>();
+
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<MainViewModel>();
             builder.Services.AddTransient<LolAccountOverViewModel>();
@@ -56,6 +59,8 @@ namespace LoLStatsMaui
             builder.Services.AddTransient<CreateUserViewModel>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<LoginViewModel>();
+            builder.Services.AddTransient<LinkAccountPage>();
+            builder.Services.AddTransient<LinkAccountViewModel>();
 
 
             var connectionString = builder.Configuration["MongoDB:ConnectionString"];

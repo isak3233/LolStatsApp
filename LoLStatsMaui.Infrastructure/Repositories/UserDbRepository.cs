@@ -28,5 +28,13 @@ namespace LoLStatsMaui.Infrastructure.Repositories
         {
             return await _context.Users.Find(u => u.Username == username).FirstOrDefaultAsync();
         }
+        public async Task UpdateUserAsync(User user)
+        {
+            await _context.Users.ReplaceOneAsync(u => u.Id == user.Id, user);
+        }
+        public async Task<bool> IsLolAccountLinkedAsync(string puuid)
+        {
+            return await _context.Users.Find(u => u.LinkedLolAccounts.Contains(puuid)).AnyAsync();
+        }
     }
 }
