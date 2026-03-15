@@ -10,6 +10,7 @@ namespace Domain.Models.Interfaces
     public interface ILolApiRepository
     {
         Task<LolAccountDto> GetLolAccount(string gameName, string tagLine);
+        Task<LolAccountDto> GetLolAccount(string puuid);
         Task<AccountRegionDto> GetAccountRegion(string puuid);
         Task<SummonerDto> GetSummoner(string puuid, string region);
         Task<List<RankEntryDto>> GetRankEntries(string puuid, string region);

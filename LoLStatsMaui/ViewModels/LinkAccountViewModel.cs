@@ -14,7 +14,7 @@ namespace LoLStatsMaui.ViewModels
 {
     public partial class LinkAccountViewModel : ObservableObject
     {
-        private ILinkLolAccountFacade _linkService;
+        private IAccountFacade _accountFacade;
 
         private LolAccountMetaData _lolAccountMetaData;
         private int _randonIconId;
@@ -35,9 +35,9 @@ namespace LoLStatsMaui.ViewModels
 
 
 
-        public LinkAccountViewModel(ILinkLolAccountFacade linkService)
+        public LinkAccountViewModel(IAccountFacade accountFacade)
         {
-            _linkService = linkService;
+            _accountFacade = accountFacade;
         }
         [RelayCommand]
         public async Task FindAccount()
@@ -45,9 +45,9 @@ namespace LoLStatsMaui.ViewModels
             try
             {
                 // Försöker hitta kontot
-                _lolAccountMetaData = await _linkService.GetLolAccountMetaDataAsync(LolName);
+                _lolAccountMetaData = await _accountFacade.GetLolAccountMetaDataAsync(LolName);
                 ErrorMessage = "";
-                _randonIconId = await _linkService.GetRandomProfileImageIdAsync(_lolAccountMetaData);
+                _randonIconId = await _accountFacade.GetRandomProfileImageIdAsync(_lolAccountMetaData);
                 ProfileIconString = $"ProfileIcons/{_randonIconId}.png";
                 AccountFound = true;
             }
@@ -75,7 +75,7 @@ namespace LoLStatsMaui.ViewModels
         {
             try
             {
-                var successful = await _linkService.VerifyAccountAsync(_lolAccountMetaData, _randonIconId);
+                var successful = await _accountFacade.VerifyAccountAsync(_lolAccountMetaData, _randonIconId);
 
                 if (successful)
                 {

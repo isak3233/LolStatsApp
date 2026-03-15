@@ -24,6 +24,11 @@
             Spacing="8"
             VerticalOptions="Start">
             <Button
+                Command="{Binding NavigateToMyAccountCommand}"
+                IsVisible="{Binding IsLoggedIn}"
+                Text="Mitt konto"
+                TextColor="White" />
+            <Button
                 Command="{Binding NavigateToLoginCommand}"
                 Text="{Binding LoginBtnText}"
                 TextColor="White" />
@@ -50,7 +55,7 @@
             <HorizontalStackLayout Spacing="20">
                 <Entry
                     BackgroundColor="White"
-                    Placeholder="Skriv något..."
+                    Placeholder="Gamename#Tagline"
                     Text="{Binding LolName}"
                     WidthRequest="500" />
                 <Button Command="{Binding SubmitCommand}" Text="Sök" />

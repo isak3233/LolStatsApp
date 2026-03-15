@@ -56,5 +56,38 @@ namespace LoLStatsMaui.Application.Services
             user.LinkedLolAccounts.Add(puuid);
             await _userDbRepository.UpdateUserAsync(user);
         }
+        public async Task AddFollowedAccountAsync(string puuid)
+        {
+            if (_currentUserService.CurrentUser == null)
+            {
+                throw new UserNotLoggedInException("User not signed in");
+            }
+            var user = _currentUserService.CurrentUser;
+            if (user.FollowedAccounts.Contains(puuid)) return;
+            user.FollowedAccounts.Add(puuid);
+            await _userDbRepository.UpdateUserAsync(user);
+        }
+        public async Task RemoveFollowedAccountAsync(string puuid)
+        {
+            if (_currentUserService.CurrentUser == null)
+            {
+                throw new UserNotLoggedInException("User not signed in");
+            }
+            var user = _currentUserService.CurrentUser;
+            if (!user.FollowedAccounts.Contains(puuid)) return;
+            user.FollowedAccounts.Remove(puuid);
+            await _userDbRepository.UpdateUserAsync(user);
+        }
+        public async Task UnlinkLolAccountAsync(string puuid)
+        {
+            if (_currentUserService.CurrentUser == null)
+            {
+                throw new UserNotLoggedInException("User not signed in");
+            }
+            var user = _currentUserService.CurrentUser;
+            if (!user.LinkedLolAccounts.Contains(puuid)) return;
+            user.LinkedLolAccounts.Remove(puuid);
+            await _userDbRepository.UpdateUserAsync(user);
+        }
     }
 }

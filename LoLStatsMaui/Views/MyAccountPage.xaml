@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LoLStatsMaui.Views.MyAccountPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="ThisPage"
+    BackgroundColor="#0A1428">
+    <Grid RowDefinitions="Auto, *">
+        <Label
+            Grid.Row="0"
+            FontSize="75"
+            HorizontalOptions="Center"
+            Text="LoLStats"
+            TextColor="White"
+            VerticalOptions="Start" />
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout
+                Margin="0,20,0,0"
+                HorizontalOptions="Center"
+                Spacing="16"
+                VerticalOptions="Start">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="30"
+                    HorizontalOptions="Center"
+                    TextColor="White">
+                    <Label.Text>
+                        <MultiBinding StringFormat="Välkommen {0}">
+                            <Binding Path="Username" />
+                        </MultiBinding>
+                    </Label.Text>
+                </Label>
+                <Label
+                    FontSize="16"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding HasError}"
+                    Text="{Binding ErrorMessage}"
+                    TextColor="Red" />
+
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding HasNoLinkedAccounts, Converter={toolkit:InvertedBoolConverter}}"
+                    Text="Länkade konton"
+                    TextColor="White" />
+
+                <VerticalStackLayout
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding HasNoLinkedAccounts}"
+                    Spacing="12">
+                    <Label
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="Det ser ut som att du inte har länkat något konto, länka här!"
+                        TextColor="#8A8A9A" />
+                    <Button
+                        Command="{Binding NavigateToLinkAccountCommand}"
+                        HorizontalOptions="Center"
+                        Text="Länka ett konto" />
+                </VerticalStackLayout>
+                <CollectionView
+                    HeightRequest="400"
+                    ItemsSource="{Binding LinkedAccounts}"
+                    SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
+                    SelectionChangedCommand="{Binding Source={x:Reference ThisPage}, Path=BindingContext.NavigateToAccountCommand}"
+                    SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}"
+                    SelectionMode="Single"
+                    VerticalOptions="Start"
+                    WidthRequest="600">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate>
+                            <Border
+                                Margin="0,0,0,8"
+                                Padding="16,10"
+                                BackgroundColor="#0F2A4A"
+                                Stroke="#1E3A5F"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="1">
+                                <Grid ColumnDefinitions="60, *, Auto" ColumnSpacing="16">
+                                    <Image
+                                        Grid.Column="0"
+                                        HeightRequest="60"
+                                        Source="{Binding ProfileIconString}"
+                                        VerticalOptions="Center"
+                                        WidthRequest="60" />
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        Spacing="4"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            TextColor="White">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0}#{1}">
+                                                    <Binding Path="SummonerName" />
+                                                    <Binding Path="TagLine" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        <Label FontSize="13" TextColor="#8A8A9A">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0} | Nivå {1}">
+                                                    <Binding Path="Region" />
+                                                    <Binding Path="Level" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                    </VerticalStackLayout>
+                                    <Button
+                                        Grid.Column="2"
+                                        BackgroundColor="#5F1E1E"
+                                        Command="{Binding Source={x:Reference ThisPage}, Path=BindingContext.UnlinkAccountCommand}"
+                                        CommandParameter="{Binding Uuid}"
+                                        Text="Avlänka"
+                                        TextColor="White"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    Text="Följda konton"
+                    TextColor="White" />
+
+                <Label
+                    FontSize="16"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding HasNoFollowedAccounts}"
+                    Text="Du följer inga konton än"
+                    TextColor="#8A8A9A" />
+
+                <CollectionView
+                    HeightRequest="400"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding HasNoFollowedAccounts, Converter={toolkit:InvertedBoolConverter}}"
+                    ItemsSource="{Binding FollowedAccounts}"
+                    SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
+                    SelectionChangedCommand="{Binding Source={x:Reference ThisPage}, Path=BindingContext.NavigateToAccountCommand}"
+                    SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}"
+                    SelectionMode="Single"
+                    WidthRequest="600">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Padding="16,10"
+                                BackgroundColor="#0F2A4A"
+                                Stroke="#1E3A5F"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="1">
+                                <Grid ColumnDefinitions="60, *, Auto" ColumnSpacing="16">
+                                    <Image
+                                        Grid.Column="0"
+                                        HeightRequest="60"
+                                        Source="{Binding ProfileIconString}"
+                                        VerticalOptions="Center"
+                                        WidthRequest="60" />
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        Spacing="4"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            TextColor="White">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0}#{1}">
+                                                    <Binding Path="SummonerName" />
+                                                    <Binding Path="TagLine" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        <Label FontSize="13" TextColor="#8A8A9A">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0} | Nivå {1}">
+                                                    <Binding Path="Region" />
+                                                    <Binding Path="Level" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                    </VerticalStackLayout>
+                                    <Button
+                                        Grid.Column="2"
+                                        BackgroundColor="#5F1E1E"
+                                        Command="{Binding Source={x:Reference ThisPage}, Path=BindingContext.UnfollowAccountCommand}"
+                                        CommandParameter="{Binding Uuid}"
+                                        Text="Avfölja"
+                                        TextColor="White"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -35,5 +35,20 @@ namespace LoLStatsMaui.Application.Services
                 TagLine = account.tagLine
             };
         }
+        public async Task<LolAccountMetaData> GetLolAccountMetaDataByPuuid(string puuid)
+        {
+            
+            var accountTask = _lolRepository.GetLolAccount(puuid);
+            var accountRegionTask = _lolRepository.GetAccountRegion(puuid);
+            var account = await accountTask;
+            var accountRegion = await accountRegionTask;
+            return new LolAccountMetaData
+            {
+                Puuid = account.puuid,
+                Region = accountRegion.region,
+                GameName = account.gameName,
+                TagLine = account.tagLine
+            };
+        }
     }
 }

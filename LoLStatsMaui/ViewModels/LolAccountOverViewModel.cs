@@ -5,6 +5,7 @@ using Domain.Models.Enities.Requests;
 using Domain.Models.Entities.Requests;
 using Domain.Models.Exceptions;
 using Domain.Models.Interfaces;
+using LoLStatsMaui.Application.Facade;
 using LoLStatsMaui.Application.Interfaces;
 using LoLStatsMaui.Domain.Exceptions;
 using LoLStatsMaui.Views;
@@ -22,7 +23,8 @@ namespace LoLStatsMaui.ViewModels
     public partial class LolAccountOverViewModel : ObservableObject
     {
         
-        private ILolFacade _lolService;
+        private ILolFacade _lolFacade;
+        private IUserFacade _userFacade;
         private MatchQueryRequest _matchRequest;
 
         [ObservableProperty]
@@ -39,6 +41,9 @@ namespace LoLStatsMaui.ViewModels
         private string _loadMatchError;
 
         [ObservableProperty]
+        private bool _isFollowing;
+
+        [ObservableProperty]
         private bool _isLoading;
         [ObservableProperty]
         private bool _isLoadingMoreMatches;
@@ -50,9 +55,10 @@ namespace LoLStatsMaui.ViewModels
 
         partial void OnHasErrorChanged(bool value) => OnPropertyChanged(nameof(ShowContent));
         partial void OnIsLoadingChanged(bool value) => OnPropertyChanged(nameof(ShowContent));
-        public LolAccountOverViewModel(ILolFacade lolService)
+        public LolAccountOverViewModel(ILolFacade lolFacade, IUserFacade userFacade)
         {
-            _lolService = lolService;
+            _lolFacade = lolFacade;
+            _userFacade = userFacade;
             SummonerOverview = new SummonerOverview();
 
         }
@@ -73,6 +79,7 @@ namespace LoLStatsMaui.ViewModels
             try
             {
                 await LoadLolProfile();
+                IsFollowing = _userFacade.GetFollowInfo(SummonerOverview.Uuid);
                 _matchRequest = new MatchQueryRequest
                 {
                     Start = -10,
@@ -120,7 +127,7 @@ namespace LoLStatsMaui.ViewModels
         }
         private async Task LoadLolProfile()
         {
-            var profile = await _lolService.GetLolProfileAsync(LolName);
+            var profile = await _lolFacade.GetLolProfileAsync(LolName);
             SummonerOverview = profile.SummonerOverview;
             MatchList = new ObservableCollection<LolMatch>(profile.Matches);
         }
@@ -135,7 +142,7 @@ namespace LoLStatsMaui.ViewModels
                     Region = SummonerOverview.RawRegion,
                     Start = _matchRequest.Start + 10,
                 };
-                var matches = await _lolService.GetLolMatches(_matchRequest);
+                var matches = await _lolFacade.GetLolMatches(_matchRequest);
                 foreach (var match in matches)
                 {
                     MatchList.Add(match);
@@ -170,6 +177,14 @@ namespace LoLStatsMaui.ViewModels
                 LoadMatchError = "Något gick fel";
             }
             
+        }
+        
+        [RelayCommand]
+        private async Task HandleFollow()
+        {
+            await _userFacade.HandleFollow(SummonerOverview.Uuid);
+            IsFollowing = !IsFollowing;
+
         }
 
 

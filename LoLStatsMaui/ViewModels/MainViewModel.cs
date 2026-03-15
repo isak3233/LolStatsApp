@@ -98,5 +98,10 @@ namespace LoLStatsMaui.ViewModels
         {
             await Shell.Current.GoToAsync(nameof(LinkAccountPage));
         }
+        [RelayCommand]
+        private async Task NavigateToMyAccount()
+        {
+            await Shell.Current.GoToAsync(nameof(MyAccountPage));
+        }
     }
 }

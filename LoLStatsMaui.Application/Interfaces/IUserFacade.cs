@@ -9,6 +9,11 @@ namespace LoLStatsMaui.Application.Interfaces
     {
         Task LoginAsync(string username, string password);
         Task CreateUserAsync(string username, string password);
+        Task LinkLolAccountAsync(string puuid);
+        Task UnlinkLolAccountAsync(string puuid);
+        bool GetFollowInfo(string puuid);
+        Task HandleFollow(string puuid);
+        
         void Logout();
         User? CurrentUser { get; }
         bool IsLoggedIn { get; }

@@ -28,10 +28,15 @@ namespace LoLStatsMaui.Infrastructure.Repositories
             return await GetAsync<LolAccountDto>($"riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}");
 
         }
+        public async Task<LolAccountDto> GetLolAccount(string puuid)
+        {
+            return await GetAsync<LolAccountDto>($"riot/account/v1/accounts/by-puuid/{puuid}");
+        }
         public async Task<AccountRegionDto> GetAccountRegion(string puuid)
         {
             return await GetAsync<AccountRegionDto>($"riot/account/v1/region/by-game/lol/by-puuid/{puuid}");
         }
+        
         public async Task<SummonerDto> GetSummoner(string puuid, string region)
         {
             return await GetAsync<SummonerDto>($"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}");

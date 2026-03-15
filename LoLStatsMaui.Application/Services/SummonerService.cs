@@ -40,5 +40,6 @@ namespace LoLStatsMaui.Application.Services
                 RankEntries = RiotMapper.GetRankEntries(rankEntries),
             };
         }
+       
     }
 }

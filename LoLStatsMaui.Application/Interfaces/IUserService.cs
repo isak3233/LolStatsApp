@@ -10,5 +10,8 @@ namespace LoLStatsMaui.Application.Interfaces
         Task<User> LoginAsync(string username, string password);
         Task<User> CreateUserAsync(string username, string password);
         Task LinkLolAccountAsync(string puuid);
+        Task UnlinkLolAccountAsync(string puuid);
+        Task AddFollowedAccountAsync(string puuid);
+        Task RemoveFollowedAccountAsync(string puuid);
     }
 }

@@ -49,7 +49,7 @@ namespace LoLStatsMaui
             builder.Services.AddScoped<IUserFacade, UserFacade>();
 
             // Samma anleding som innan. Göra så att våran ui kan använda en service
-            builder.Services.AddScoped<ILinkLolAccountFacade, LinkLolAccountFacade>();
+            builder.Services.AddScoped<IAccountFacade, AccountFacade>();
 
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<MainViewModel>();
@@ -61,6 +61,8 @@ namespace LoLStatsMaui
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<LinkAccountPage>();
             builder.Services.AddTransient<LinkAccountViewModel>();
+            builder.Services.AddTransient<MyAccountPage>();
+            builder.Services.AddTransient<MyAccountViewModel>();
 
 
             var connectionString = builder.Configuration["MongoDB:ConnectionString"];

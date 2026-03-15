@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     BackgroundColor="#0A1428">
     <Grid
-        RowDefinitions="Auto, Auto, Auto, Auto"
+        RowDefinitions="Auto, Auto, Auto, Auto, Auto"
         RowSpacing="12"
         VerticalOptions="Center">
 
@@ -32,7 +32,7 @@
 
 
         <VerticalStackLayout
-            Grid.Row="3"
+            Grid.Row="2"
             HorizontalOptions="Center"
             IsVisible="{Binding AccountFound}"
             Spacing="12">
@@ -54,16 +54,18 @@
                 Command="{Binding VerifyAccountCommand}"
                 HorizontalOptions="Center"
                 Text="Verifiera konto" />
-            <Label
-                FontSize="16"
-                HorizontalOptions="Center"
-                Text="{Binding ErrorMessage}"
-                TextColor="Red" />
+
             <Label
                 FontSize="20"
                 HorizontalOptions="Center"
                 Text="{Binding VerifiedMessage}"
                 TextColor="White" />
         </VerticalStackLayout>
+        <Label
+            Grid.Row="3"
+            FontSize="16"
+            HorizontalOptions="Center"
+            Text="{Binding ErrorMessage}"
+            TextColor="Red" />
     </Grid>
 </ContentPage>

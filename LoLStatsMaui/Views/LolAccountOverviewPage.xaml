@@ -30,10 +30,9 @@
                     Spacing="0">
 
                     <!--  Profilbild och metadata om profilnamn  -->
-                    <HorizontalStackLayout Spacing="16">
-
+                    <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="16">
                         <!--  Profilbild och level  -->
-                        <Grid HorizontalOptions="Start">
+                        <Grid Grid.Column="0" HorizontalOptions="Start">
                             <Image
                                 Aspect="AspectFill"
                                 HeightRequest="90"
@@ -59,7 +58,10 @@
                         </Grid>
 
                         <!--  Namn och region  -->
-                        <VerticalStackLayout Spacing="8" VerticalOptions="Center">
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="8"
+                            VerticalOptions="Center">
                             <HorizontalStackLayout Spacing="6">
                                 <Label
                                     FontAttributes="Bold"
@@ -87,7 +89,16 @@
                                     TextColor="#5B9BD5" />
                             </Border>
                         </VerticalStackLayout>
-                    </HorizontalStackLayout>
+
+                        <!--  Följ knapp  -->
+                        <Button
+                            Grid.Column="2"
+                            BackgroundColor="{Binding IsFollowing, Converter={toolkit:BoolToObjectConverter TrueObject='#5F1E1E', FalseObject='#1E3A5F'}}"
+                            Command="{Binding HandleFollowCommand}"
+                            Text="{Binding IsFollowing, Converter={toolkit:BoolToObjectConverter TrueObject='Avfölja', FalseObject='Följ'}}"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </Grid>
 
                     <!--  Rank och matcher grid  -->
                     <Grid Margin="0,20,0,0" ColumnSpacing="20">
