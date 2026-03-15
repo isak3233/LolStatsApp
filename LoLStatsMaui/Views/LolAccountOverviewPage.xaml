@@ -187,6 +187,38 @@
 
                         <!--  Match kort  -->
                         <VerticalStackLayout Grid.Column="1">
+                            <Grid
+                                Margin="0,16,0,8"
+                                ColumnDefinitions="Auto, Auto, Auto"
+                                ColumnSpacing="8">
+                                <Label
+                                    Grid.Column="0"
+                                    FontAttributes="Bold"
+                                    FontSize="20"
+                                    Text="Matchhistorik"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+
+                                <Button
+                                    Grid.Column="1"
+                                    Command="{Binding NavigateToLiveGameCommand}"
+                                    Text="Live Game"
+                                    VerticalOptions="Center" />
+
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="8,4"
+                                    BackgroundColor="#5F1E1E"
+                                    IsVisible="{Binding SummonerOverview.CurrentLolMatch, Converter={toolkit:IsNotNullConverter}}"
+                                    StrokeShape="RoundRectangle 6"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="12"
+                                        Text="LIVE"
+                                        TextColor="Red" />
+                                </Border>
+                            </Grid>
                             <CollectionView
                                 ItemsSource="{Binding MatchList}"
                                 VerticalOptions="Start"

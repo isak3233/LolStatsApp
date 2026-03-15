@@ -63,6 +63,8 @@ namespace LoLStatsMaui
             builder.Services.AddTransient<LinkAccountViewModel>();
             builder.Services.AddTransient<MyAccountPage>();
             builder.Services.AddTransient<MyAccountViewModel>();
+            builder.Services.AddTransient<LiveGamePage>();
+            builder.Services.AddTransient<LiveGameViewModel>();
 
 
             var connectionString = builder.Configuration["MongoDB:ConnectionString"];

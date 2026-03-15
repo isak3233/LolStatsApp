@@ -1,4 +1,5 @@
-﻿using Domain.Models.Entities;
+﻿using Domain.Models.Enities.Dto;
+using Domain.Models.Entities;
 using Domain.Models.Entities.Dto;
 using Domain.Models.Entities.Requests;
 using Domain.Models.EntitiesDto;
@@ -14,6 +15,7 @@ namespace Domain.Models.Interfaces
         Task<AccountRegionDto> GetAccountRegion(string puuid);
         Task<SummonerDto> GetSummoner(string puuid, string region);
         Task<List<RankEntryDto>> GetRankEntries(string puuid, string region);
+        Task<CurrentGameInfoDto?> GetCurrentMatch(string puuid, string region);
         Task<List<string>> GetLolMatchesId(MatchQueryRequest request);
         Task<LolMatchDto> GetLolMatch(string matchId, string region);
 

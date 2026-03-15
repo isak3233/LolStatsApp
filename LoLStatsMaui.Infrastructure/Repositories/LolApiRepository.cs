@@ -1,4 +1,5 @@
 ﻿
+using Domain.Models.Enities.Dto;
 using Domain.Models.Entities;
 using Domain.Models.Entities.Dto;
 using Domain.Models.Entities.Requests;
@@ -44,6 +45,19 @@ namespace LoLStatsMaui.Infrastructure.Repositories
         public async Task<List<RankEntryDto>> GetRankEntries(string puuid, string region)
         {
             return await GetAsync<List<RankEntryDto>>($"https://{region}.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}");
+        }
+        public async Task<CurrentGameInfoDto?> GetCurrentMatch(string puuid, string region)
+        {
+            string url = $"https://{region}.api.riotgames.com/lol/spectator/v5/active-games/by-summoner/{puuid}";
+            try
+            {
+                var match = await GetAsync<CurrentGameInfoDto>(url);
+                return match;
+            }
+            catch(NotFoundException e)
+            {
+                return null;
+            }
         }
         public async Task<List<string>> GetLolMatchesId(MatchQueryRequest request)
         {

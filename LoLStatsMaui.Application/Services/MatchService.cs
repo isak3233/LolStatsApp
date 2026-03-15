@@ -1,4 +1,5 @@
 ﻿using Domain.Models.Enities.LolEnities;
+using Domain.Models.Enities.Requests;
 using Domain.Models.Entities.Requests;
 using Domain.Models.EntitiesDto;
 using Domain.Models.Interfaces;
@@ -18,7 +19,12 @@ namespace LoLStatsMaui.Application.Services
         {
             _lolRepository = lolRepository;
         }
-
+        public async Task<CurrentLolMatch?> GetCurrentMatch(LolAccountMetaData lolAccountMetaData)
+        {
+            var matchData = await _lolRepository.GetCurrentMatch(lolAccountMetaData.Puuid, lolAccountMetaData.Region);
+            if (matchData == null) return null;
+            return RiotMapper.Map(matchData, lolAccountMetaData.Puuid);
+        }
         public async Task<List<LolMatch>> GetLolMatchesAsync(MatchQueryRequest request)
         {
             var routing = RiotMapper.GetRouting(request.Region);

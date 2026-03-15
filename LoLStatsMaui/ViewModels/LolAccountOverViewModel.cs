@@ -186,6 +186,11 @@ namespace LoLStatsMaui.ViewModels
             IsFollowing = !IsFollowing;
 
         }
+        [RelayCommand]
+        private async Task NavigateToLiveGame()
+        {
+            await Shell.Current.GoToAsync($"{nameof(LiveGamePage)}?lolName={Uri.EscapeDataString(LolName)}");
+        }
 
 
 

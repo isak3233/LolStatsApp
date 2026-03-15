@@ -12,6 +12,7 @@ namespace LoLStatsMaui
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(LinkAccountPage), typeof(LinkAccountPage));
             Routing.RegisterRoute(nameof(MyAccountPage), typeof(MyAccountPage));
+            Routing.RegisterRoute(nameof(LiveGamePage), typeof(LiveGamePage));
         }
     }
 }
