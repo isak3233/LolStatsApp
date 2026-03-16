@@ -20,11 +20,11 @@ namespace LoLStatsMaui.Application.Facade
             _matchService = matchService;
         }
 
-        public async Task<LolProfileData> GetLolProfileAsync(string lolName)
+        public async Task<LolProfileData> GetLolProfileAsync(string lolName, bool updateSummoner = false)
         {
             var metaData = await _accountService.GetLolAccountMetaData(lolName);
 
-            var summonerTask = _summonerService.GetSummonerOverviewAsync(metaData);
+            var summonerTask = _summonerService.GetSummonerOverviewAsync(metaData, updateSummoner);
             var currentMatchTask = _matchService.GetCurrentMatch(metaData);
 
             var summoner = await summonerTask;

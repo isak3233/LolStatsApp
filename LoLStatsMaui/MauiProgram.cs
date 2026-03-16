@@ -34,6 +34,7 @@ namespace LoLStatsMaui
                 client.DefaultRequestHeaders.Add("X-Riot-Token", builder.Configuration["RiotApi:ApiKey"]);
             });
             builder.Services.AddScoped<IUserDbRepository, UserDbRepository>();
+            builder.Services.AddScoped<ILolDbRepository, LolDbRepository>();
 
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<ISummonerService, SummonerService>();

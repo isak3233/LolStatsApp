@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,7 @@ namespace Domain.Models.Enities.LolEnities
 {
     public class SummonerOverview
     {
+        [BsonId]
         public string Uuid { get; set; }
         public string SummonerName { get; set; }
         public string TagLine { get; set; }

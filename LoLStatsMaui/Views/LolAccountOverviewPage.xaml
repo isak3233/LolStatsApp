@@ -75,19 +75,27 @@
                                     TextColor="#8A8A9A"
                                     VerticalOptions="End" />
                             </HorizontalStackLayout>
-                            <Border
-                                Padding="10,4"
-                                BackgroundColor="#1E3A5F"
-                                HorizontalOptions="Start"
-                                Stroke="#2A5080"
-                                StrokeShape="RoundRectangle 6"
-                                StrokeThickness="1">
-                                <Label
-                                    FontAttributes="Bold"
-                                    FontSize="13"
-                                    Text="{Binding SummonerOverview.Region}"
-                                    TextColor="#5B9BD5" />
-                            </Border>
+                            <HorizontalStackLayout Spacing="8">
+                                <Border
+                                    Padding="10,4"
+                                    BackgroundColor="#1E3A5F"
+                                    HorizontalOptions="Start"
+                                    Stroke="#2A5080"
+                                    StrokeShape="RoundRectangle 6"
+                                    StrokeThickness="1">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="10"
+                                        Text="{Binding SummonerOverview.Region}"
+                                        TextColor="#5B9BD5" />
+                                </Border>
+                                <Button
+                                    BackgroundColor="#1E3A5F"
+                                    Command="{Binding UpdateSummonerCommand}"
+                                    Text="Uppdatera"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
                         </VerticalStackLayout>
 
                         <!--  Följ knapp  -->

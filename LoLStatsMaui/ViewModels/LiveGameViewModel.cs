@@ -74,7 +74,7 @@ namespace LoLStatsMaui.ViewModels
             IsLoading = true;
             try
             {
-                var profileData = await _lolFacade.GetLolProfileAsync(LolName);
+                var profileData = await _lolFacade.GetLolProfileAsync(LolName, true);
                 SummonerOverview = profileData.SummonerOverview;
 
             }

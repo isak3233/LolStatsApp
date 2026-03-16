@@ -223,6 +223,25 @@ namespace LoLStatsMaui.ViewModels
         {
             await Shell.Current.GoToAsync($"{nameof(LiveGamePage)}?lolName={Uri.EscapeDataString(LolName)}");
         }
+        [RelayCommand]
+        private async Task UpdateSummoner()
+        {
+            try
+            {
+                var profile = await _lolFacade.GetLolProfileAsync(LolName, true);
+                SummonerOverview = profile.SummonerOverview;
+            }
+            catch (RateLimitException e)
+            {
+                ErrorMessage = "Du har skickat för många anrop, Vänta lite innan du försöker igen";
+                Debug.WriteLine(e);
+            }
+            catch (Exception e)
+            {
+                ErrorMessage = "Något gick fel";
+                Debug.WriteLine(e);
+            }
+        }
 
 
 

@@ -4,6 +4,7 @@ using Domain.Models.Entities.Dto;
 using Domain.Models.Interfaces;
 using LoLStatsMaui.Application.Interfaces;
 using LoLStatsMaui.Infrastructure.Constants;
+using LoLStatsMaui.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,23 +13,41 @@ namespace LoLStatsMaui.Application.Services
 {
     public class SummonerService : ISummonerService
     {
-        private readonly ILolApiRepository _lolRepository;
+        private readonly ILolApiRepository _lolApiRepository;
+        private readonly ILolDbRepository _lolDbRepository;
 
-        public SummonerService(ILolApiRepository lolRepository)
+        public SummonerService(ILolApiRepository lolApiRepository, ILolDbRepository lolDbRepository)
         {
-            _lolRepository = lolRepository;
+            _lolApiRepository = lolApiRepository;
+            _lolDbRepository = lolDbRepository;
         }
         public async Task<SummonerDto> GetSummonerDto(LolAccountMetaData accountMetaData)
         {
-            return await _lolRepository.GetSummoner(accountMetaData.Puuid, accountMetaData.Region);
+            return await _lolApiRepository.GetSummoner(accountMetaData.Puuid, accountMetaData.Region);
         }
-        public async Task<SummonerOverview> GetSummonerOverviewAsync(LolAccountMetaData accountMetaData)
+        public async Task<SummonerOverview> GetSummonerOverviewAsync(LolAccountMetaData accountMetaData, bool updateSummonerOverview = false)
         {
-            var summonerDataTask = _lolRepository.GetSummoner(accountMetaData.Puuid, accountMetaData.Region);
-            var rankEntriesTask = _lolRepository.GetRankEntries(accountMetaData.Puuid, accountMetaData.Region);
+            if(updateSummonerOverview)
+            {
+                var updatedSummonerOverview = await GetUpdatedSummonerOverview(accountMetaData);
+                return updatedSummonerOverview;
+            } else
+            {
+                var maybeSummonerOverview = await _lolDbRepository.GetSummonerOverviewAsync(accountMetaData.Puuid);
+                if (maybeSummonerOverview != null) return maybeSummonerOverview;
+                var updatedSummonerOverview = await GetUpdatedSummonerOverview(accountMetaData);
+                return updatedSummonerOverview;
+            }
+            
+        }
+        private async Task<SummonerOverview> GetUpdatedSummonerOverview(LolAccountMetaData accountMetaData)
+        {
+            var summonerDataTask = _lolApiRepository.GetSummoner(accountMetaData.Puuid, accountMetaData.Region);
+            var rankEntriesTask = _lolApiRepository.GetRankEntries(accountMetaData.Puuid, accountMetaData.Region);
             var rankEntries = await rankEntriesTask;
             var summonerData = await summonerDataTask;
-            return new SummonerOverview
+
+            var summonerOverview = new SummonerOverview
             {
                 Uuid = summonerData.puuid,
                 SummonerName = accountMetaData.GameName,
@@ -39,6 +58,8 @@ namespace LoLStatsMaui.Application.Services
                 RawRegion = accountMetaData.Region,
                 RankEntries = RiotMapper.GetRankEntries(rankEntries),
             };
+            _ = _lolDbRepository.UpsertSummonerOverviewAsync(summonerOverview);
+            return summonerOverview;
         }
        
     }

@@ -9,7 +9,7 @@ namespace LoLStatsMaui.Application.Interfaces
 {
     public interface ISummonerService
     {
-        Task<SummonerOverview> GetSummonerOverviewAsync(LolAccountMetaData accountMetaData);
+        Task<SummonerOverview> GetSummonerOverviewAsync(LolAccountMetaData accountMetaData, bool updateSummonerOverview = false);
         Task<SummonerDto> GetSummonerDto(LolAccountMetaData accountMetaData);
     }
 }
