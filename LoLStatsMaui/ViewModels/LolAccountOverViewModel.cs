@@ -56,6 +56,8 @@ namespace LoLStatsMaui.ViewModels
         private string _loadMatchError;
 
         [ObservableProperty]
+        private bool _isLoggedIn;
+        [ObservableProperty]
         private bool _isFollowing;
 
         [ObservableProperty]
@@ -75,6 +77,7 @@ namespace LoLStatsMaui.ViewModels
         {
             _lolFacade = lolFacade;
             _userFacade = userFacade;
+            IsLoggedIn = userFacade.IsLoggedIn;
             SummonerOverview = new SummonerOverview();
 
         }

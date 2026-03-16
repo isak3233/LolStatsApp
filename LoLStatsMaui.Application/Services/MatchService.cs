@@ -4,38 +4,41 @@ using Domain.Models.Entities.Requests;
 using Domain.Models.EntitiesDto;
 using Domain.Models.Interfaces;
 using LoLStatsMaui.Application.Interfaces;
+using LoLStatsMaui.Application.Mappers;
 using LoLStatsMaui.Infrastructure.Constants;
+using LoLStatsMaui.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace LoLStatsMaui.Application.Services
 {
     public class MatchService : IMatchService
     {
-        private readonly ILolApiRepository _lolRepository;
+        private readonly ILolApiRepository _lolApiRepository;
 
-        public MatchService(ILolApiRepository lolRepository)
+        public MatchService(ILolApiRepository lolApiRepository)
         {
-            _lolRepository = lolRepository;
+            _lolApiRepository = lolApiRepository;
         }
         public async Task<CurrentLolMatch?> GetCurrentMatch(LolAccountMetaData lolAccountMetaData)
         {
-            var matchData = await _lolRepository.GetCurrentMatch(lolAccountMetaData.Puuid, lolAccountMetaData.Region);
+            var matchData = await _lolApiRepository.GetCurrentMatch(lolAccountMetaData.Puuid, lolAccountMetaData.Region);
             if (matchData == null) return null;
             return RiotMapper.Map(matchData, lolAccountMetaData.Puuid);
         }
         public async Task<List<LolMatch>> GetLolMatchesAsync(MatchQueryRequest request)
         {
-            var routing = RiotMapper.GetRouting(request.Region);
-            request.Region = routing;
-            var matchIds = await _lolRepository.GetLolMatchesId(request);
-            var route = RiotMapper.GetRouting(request.Region);
-            List<Task<LolMatchDto>> matchDtoTasks = matchIds
-                .Select(matchId => _lolRepository.GetLolMatch(matchId, route))
-                .ToList();
-            LolMatchDto[] matchesDto = await Task.WhenAll(matchDtoTasks);
-            return matchesDto.Select(match => RiotMapper.Map(match, request.Uuid)).ToList();
+            
+            var routing = RegionMapper.GetRouting(request.Region);
+            request = request with { Region = routing };
+            var matchIds = await _lolApiRepository.GetLolMatchesId(request);
+            var matchDtoTasks = matchIds.Select(id => _lolApiRepository.GetLolMatch(id, routing)).ToList();
+            var matchesDto = await Task.WhenAll(matchDtoTasks);
+            return matchesDto.Select(m => MatchMapper.Map(m, request.Uuid)).ToList();
+            
+            
         }
     }
 }

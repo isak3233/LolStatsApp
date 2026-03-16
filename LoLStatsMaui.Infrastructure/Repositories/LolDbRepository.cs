@@ -1,8 +1,11 @@
 ﻿using Domain.Models.Enities.LolEnities;
+using Domain.Models.Enities.Requests;
 using Domain.Models.Interfaces;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace LoLStatsMaui.Infrastructure.Repositories
@@ -28,6 +31,32 @@ namespace LoLStatsMaui.Infrastructure.Repositories
             var result = await _context.SummonerOverviews.FindAsync(filter);
             return await result.FirstOrDefaultAsync();
         }
+
+        public async Task UpsertLolAccountMetaDataAsync(LolAccountMetaData lolAccountMetaData)
+        {
+            var filter = Builders<LolAccountMetaData>.Filter.Eq(s => s.Puuid, lolAccountMetaData.Puuid);
+            await _context.LolAccountsMetaData.ReplaceOneAsync(filter, lolAccountMetaData, new ReplaceOptions { IsUpsert = true });
+        }
+        public async Task<LolAccountMetaData?> GetLolAccountMetaDataAsync(string lolName)
+        {
+            string[] splitName = lolName.Split('#');
+            string gameName = splitName[0];
+            string tagLine = splitName[1];
+
+            var filter = Builders<LolAccountMetaData>.Filter.And(
+                Builders<LolAccountMetaData>.Filter.Regex(s => s.GameName, new BsonRegularExpression($"^{gameName}$", "i")),
+                Builders<LolAccountMetaData>.Filter.Regex(s => s.TagLine, new BsonRegularExpression($"^{tagLine}$", "i"))
+            );
+            var result = await _context.LolAccountsMetaData.FindAsync(filter);
+            return await result.FirstOrDefaultAsync();
+        }
+        public async Task<LolAccountMetaData?> GetLolAccountMetaDataByPuuidAsync(string puuid)
+        {
+            var filter = Builders<LolAccountMetaData>.Filter.Eq(s => s.Puuid, puuid);
+            var result = await _context.LolAccountsMetaData.FindAsync(filter);
+            return await result.FirstOrDefaultAsync();
+        }
+
 
     }
 }

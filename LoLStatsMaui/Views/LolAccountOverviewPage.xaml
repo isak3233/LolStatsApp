@@ -57,7 +57,7 @@
                             </Border>
                         </Grid>
 
-                        <!--  Namn och region  -->
+                        <!--  Namn, region och update  -->
                         <VerticalStackLayout
                             Grid.Column="1"
                             Spacing="8"
@@ -74,21 +74,23 @@
                                     Text="{Binding SummonerOverview.TagLine, StringFormat='#{0}'}"
                                     TextColor="#8A8A9A"
                                     VerticalOptions="End" />
-                            </HorizontalStackLayout>
-                            <HorizontalStackLayout Spacing="8">
                                 <Border
                                     Padding="10,4"
                                     BackgroundColor="#1E3A5F"
                                     HorizontalOptions="Start"
                                     Stroke="#2A5080"
                                     StrokeShape="RoundRectangle 6"
-                                    StrokeThickness="1">
+                                    StrokeThickness="1"
+                                    VerticalOptions="Center">
                                     <Label
                                         FontAttributes="Bold"
                                         FontSize="10"
                                         Text="{Binding SummonerOverview.Region}"
                                         TextColor="#5B9BD5" />
                                 </Border>
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="8">
+
                                 <Button
                                     BackgroundColor="#1E3A5F"
                                     Command="{Binding UpdateSummonerCommand}"
@@ -101,8 +103,9 @@
                         <!--  Följ knapp  -->
                         <Button
                             Grid.Column="2"
-                            BackgroundColor="{Binding IsFollowing, Converter={toolkit:BoolToObjectConverter TrueObject='#5F1E1E', FalseObject='#1E3A5F'}}"
+                            BackgroundColor="{Binding IsFollowing, Converter={toolkit:BoolToObjectConverter TrueObject='#FF5F1E1E', FalseObject='#FF1E3A5F'}}"
                             Command="{Binding HandleFollowCommand}"
+                            IsVisible="{Binding IsLoggedIn}"
                             Text="{Binding IsFollowing, Converter={toolkit:BoolToObjectConverter TrueObject='Avfölja', FalseObject='Följ'}}"
                             TextColor="White"
                             VerticalOptions="Center" />
@@ -193,11 +196,11 @@
                             </CollectionView>
                         </HorizontalStackLayout>
 
-                        <!--  Match kort  -->
+                        <!--  Match kort och Filter  -->
                         <VerticalStackLayout Grid.Column="1">
                             <Grid
                                 Margin="0,16,0,8"
-                                ColumnDefinitions="Auto, Auto, Auto"
+                                ColumnDefinitions="Auto, Auto, Auto, Auto"
                                 ColumnSpacing="8">
                                 <Label
                                     Grid.Column="0"
@@ -215,9 +218,13 @@
                                     TextColor="White"
                                     VerticalOptions="Center"
                                     WidthRequest="200" />
-
-                                <Border
+                                <Button
                                     Grid.Column="2"
+                                    Command="{Binding NavigateToLiveGameCommand}"
+                                    Text="Live Game"
+                                    VerticalOptions="Center" />
+                                <Border
+                                    Grid.Column="3"
                                     Padding="8,4"
                                     BackgroundColor="#5F1E1E"
                                     IsVisible="{Binding SummonerOverview.CurrentLolMatch, Converter={toolkit:IsNotNullConverter}}"
@@ -230,11 +237,7 @@
                                         TextColor="Red" />
                                 </Border>
 
-                                <Button
-                                    Grid.Column="3"
-                                    Command="{Binding NavigateToLiveGameCommand}"
-                                    Text="Live Game"
-                                    VerticalOptions="Center" />
+
                             </Grid>
                             <CollectionView
                                 ItemsSource="{Binding MatchList}"
@@ -246,9 +249,9 @@
                                         <Border
                                             Margin="0,0,0,8"
                                             Padding="16,10"
-                                            BackgroundColor="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='#0F2A4A', FalseObject='#2A0F0F'}}"
+                                            BackgroundColor="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='#FF0F2A4A', FalseObject='#FF2A0F0F'}}"
                                             HorizontalOptions="Start"
-                                            Stroke="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='#1E3A5F', FalseObject='#5F1E1E'}}"
+                                            Stroke="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='#FF1E3A5F', FalseObject='#FF5F1E1E'}}"
                                             StrokeShape="RoundRectangle 10"
                                             StrokeThickness="1">
                                             <Grid ColumnSpacing="16">
@@ -271,7 +274,7 @@
                                                         FontAttributes="Bold"
                                                         FontSize="14"
                                                         Text="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='Victory', FalseObject='Defeat'}}"
-                                                        TextColor="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='#5B9BD5', FalseObject='#F44336'}}" />
+                                                        TextColor="{Binding TargetPlayer.Win, Converter={toolkit:BoolToObjectConverter TrueObject='#FF5B9BD5', FalseObject='#FFF44336'}}" />
                                                     <Label
                                                         FontSize="13"
                                                         Text="{Binding GameDuration, StringFormat='{0} Min'}"
@@ -411,7 +414,7 @@
                                                                     <Label
                                                                         FontSize="11"
                                                                         Text="{Binding GameName}"
-                                                                        TextColor="{Binding IsTargetPlayer, Converter={toolkit:BoolToObjectConverter TrueObject='White', FalseObject='#8A8A9A'}}"
+                                                                        TextColor="{Binding IsTargetPlayer, Converter={toolkit:BoolToObjectConverter TrueObject='#FFFFFFFF', FalseObject='#FF8A8A9A'}}"
                                                                         VerticalOptions="Center" />
                                                                 </HorizontalStackLayout>
                                                             </DataTemplate>
@@ -437,7 +440,7 @@
                                                                     <Label
                                                                         FontSize="11"
                                                                         Text="{Binding GameName}"
-                                                                        TextColor="{Binding IsTargetPlayer, Converter={toolkit:BoolToObjectConverter TrueObject='White', FalseObject='#8A8A9A'}}"
+                                                                        TextColor="{Binding IsTargetPlayer, Converter={toolkit:BoolToObjectConverter TrueObject='#FFFFFFFF', FalseObject='#FF8A8A9A'}}"
                                                                         VerticalOptions="Center" />
                                                                 </HorizontalStackLayout>
                                                             </DataTemplate>

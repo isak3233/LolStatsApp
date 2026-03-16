@@ -4,6 +4,7 @@ using LoLStatsMaui.Application.Interfaces;
 using LoLStatsMaui.Application.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 namespace LoLStatsMaui.Application.Facade
 {
@@ -20,12 +21,15 @@ namespace LoLStatsMaui.Application.Facade
             _matchService = matchService;
         }
 
-        public async Task<LolProfileData> GetLolProfileAsync(string lolName, bool updateSummoner = false)
+        public async Task<LolProfileData> GetLolProfileAsync(string lolName, bool update = false)
         {
-            var metaData = await _accountService.GetLolAccountMetaData(lolName);
 
-            var summonerTask = _summonerService.GetSummonerOverviewAsync(metaData, updateSummoner);
+            var metaData = await _accountService.GetLolAccountMetaData(lolName, update);
+
+            var summonerTask = _summonerService.GetSummonerOverviewAsync(metaData, update);
+
             var currentMatchTask = _matchService.GetCurrentMatch(metaData);
+
 
             var summoner = await summonerTask;
             var currentMatch = await currentMatchTask;

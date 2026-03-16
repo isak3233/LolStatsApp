@@ -17,6 +17,7 @@ namespace Domain.Models.Enities.LolEnities
         public string ProfileIconString { get; set; }
         public List<RankEntry> RankEntries { get; set; }
         public bool IsInGame => CurrentLolMatch != null;
+        [BsonIgnoreIfNull]
         public CurrentLolMatch? CurrentLolMatch { get; set; }
     }
 }

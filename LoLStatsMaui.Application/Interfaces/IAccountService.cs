@@ -7,7 +7,7 @@ namespace LoLStatsMaui.Application.Interfaces
 {
     public interface IAccountService
     {
-        Task<LolAccountMetaData> GetLolAccountMetaData(string lolName);
-        Task<LolAccountMetaData> GetLolAccountMetaDataByPuuid(string puuid);
+        Task<LolAccountMetaData> GetLolAccountMetaData(string lolName, bool updateData = false);
+        Task<LolAccountMetaData> GetLolAccountMetaDataByPuuid(string puuid, bool updateData = false);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Domain.Models.Enities.LolEnities;
+using Domain.Models.Enities.Requests;
 using Domain.Models.Enities.UserEnities;
 using MongoDB.Driver;
 
@@ -24,4 +25,5 @@ public class LolStatsDbContext
 
     public IMongoCollection<User> Users => _database.GetCollection<User>("Users");
     public IMongoCollection<SummonerOverview> SummonerOverviews => _database.GetCollection<SummonerOverview>("SummonerOverviews");
+    public IMongoCollection<LolAccountMetaData> LolAccountsMetaData => _database.GetCollection<LolAccountMetaData>("LolAccountsMetaData");
 }

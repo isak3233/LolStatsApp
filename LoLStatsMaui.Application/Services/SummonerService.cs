@@ -35,6 +35,7 @@ namespace LoLStatsMaui.Application.Services
             {
                 var maybeSummonerOverview = await _lolDbRepository.GetSummonerOverviewAsync(accountMetaData.Puuid);
                 if (maybeSummonerOverview != null) return maybeSummonerOverview;
+
                 var updatedSummonerOverview = await GetUpdatedSummonerOverview(accountMetaData);
                 return updatedSummonerOverview;
             }

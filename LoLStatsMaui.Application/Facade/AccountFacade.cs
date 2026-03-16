@@ -13,12 +13,14 @@ namespace LoLStatsMaui.Application.Facade
         private readonly IAccountService _accountService;
         private readonly ISummonerService _summonerService;
         private readonly IUserFacade _userFacade;
+        private readonly IMatchService _matchService;
 
-        public AccountFacade(IAccountService accountService, ISummonerService summonerService, IUserFacade userFacade)
+        public AccountFacade(IAccountService accountService, ISummonerService summonerService, IUserFacade userFacade, IMatchService matchService)
         {
             _accountService = accountService;
             _summonerService = summonerService;
             _userFacade = userFacade;
+            _matchService = matchService;
         }
 
         public string? GetUsername() => _userFacade.CurrentUser?.Username;
@@ -69,7 +71,14 @@ namespace LoLStatsMaui.Application.Facade
         private async Task<SummonerOverview> GetSummonerOverview(string puuid)
         {
             var accountMetaData = await _accountService.GetLolAccountMetaDataByPuuid(puuid);
-            return await _summonerService.GetSummonerOverviewAsync(accountMetaData);
+
+            var currentMatchTask = _matchService.GetCurrentMatch(accountMetaData);
+            var summonerOverviewTask = _summonerService.GetSummonerOverviewAsync(accountMetaData);
+
+            var currentMatch = await currentMatchTask;
+            var summonerOverview = await summonerOverviewTask;
+            summonerOverview.CurrentLolMatch = currentMatch;
+            return summonerOverview;
         }
     }
 }

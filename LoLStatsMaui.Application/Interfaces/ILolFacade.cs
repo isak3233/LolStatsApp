@@ -8,7 +8,7 @@ namespace LoLStatsMaui.Application.Interfaces
 {
     public interface ILolFacade
     {
-        Task<LolProfileData> GetLolProfileAsync(string lolName, bool updateSummoner = false);
+        Task<LolProfileData> GetLolProfileAsync(string lolName, bool update = false);
         Task<List<LolMatch>> GetLolMatches(MatchQueryRequest matchRequest);
         
     }

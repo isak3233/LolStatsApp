@@ -17,7 +17,7 @@ namespace LoLStatsMaui.Application.Mappers
                 TargetPlayer = targetPlayer,
                 Players = dto.Info.Participants.Select(p => MapPlayer(p, targetPlayer)).ToList(),
                 QueueType = QueueMapper.GetQueueType(dto.Info.QueueId),
-                GameDuration = (int)(dto.Info.GameDuration / 60),
+                GameDuration = dto.Info.GameDuration / 60,
                 GameCreation = dto.Info.GameCreation,
             };
         }
