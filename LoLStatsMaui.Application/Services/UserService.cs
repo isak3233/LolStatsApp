@@ -89,5 +89,24 @@ namespace LoLStatsMaui.Application.Services
             user.LinkedLolAccounts.Remove(puuid);
             await _userDbRepository.UpdateUserAsync(user);
         }
+        public async Task AddSearchedLolName(string lolName)
+        {
+            if (_currentUserService.CurrentUser == null)
+            {
+                throw new UserNotLoggedInException("User not signed in");
+            }
+            var user = _currentUserService.CurrentUser;
+
+            user.SearchHistory.Remove(lolName);
+            user.SearchHistory.Insert(0, lolName); 
+
+            if (user.SearchHistory.Count > 5)
+            {
+                user.SearchHistory = user.SearchHistory.Take(5).ToList();
+            }
+                
+
+            await _userDbRepository.UpdateUserAsync(user);
+        }
     }
 }

@@ -13,5 +13,6 @@ namespace LoLStatsMaui.Application.Interfaces
         Task UnlinkLolAccountAsync(string puuid);
         Task AddFollowedAccountAsync(string puuid);
         Task RemoveFollowedAccountAsync(string puuid);
+        Task AddSearchedLolName(string lolName);
     }
 }

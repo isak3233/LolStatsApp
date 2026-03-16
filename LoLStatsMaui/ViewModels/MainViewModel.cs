@@ -5,6 +5,7 @@ using LoLStatsMaui.Application.Interfaces;
 using LoLStatsMaui.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -22,10 +23,16 @@ namespace LoLStatsMaui.ViewModels
         [ObservableProperty]
         private bool _isLoggedIn;
         [ObservableProperty]
+        private ObservableCollection<string> _searchHistory = new();
+        public bool HasSearchHistory => SearchHistory.Count > 0;
+        [ObservableProperty]
         private string _errorMessage;
 
         [ObservableProperty]
         private string _lolName;
+
+        partial void OnSearchHistoryChanged(ObservableCollection<string> value) =>
+            OnPropertyChanged(nameof(HasSearchHistory));
 
 
 
@@ -41,11 +48,13 @@ namespace LoLStatsMaui.ViewModels
             {
                 LoginBtnText = "Logga ut";
                 IsLoggedIn = true;
+                SearchHistory = new ObservableCollection<string>(_userFacade.CurrentUser.SearchHistory); 
             }
             else
             {
                 LoginBtnText = "Logga in";
                 IsLoggedIn = false;
+                SearchHistory = new ObservableCollection<string>(new List<string>());
             }
         }
         private async void OnSubmit()
@@ -70,6 +79,10 @@ namespace LoLStatsMaui.ViewModels
                 ErrorMessage = "Det sökta spel tagen är mindre än 3 tecken";
                 return;
             }
+            if(IsLoggedIn)
+            {
+                _ = _userFacade.AddSearchedLolName(LolName);
+            }
             ErrorMessage = "";
             await Shell.Current.GoToAsync($"{nameof(LolAccountOverviewPage)}?lolName={Uri.EscapeDataString(LolName)}");
 
@@ -91,6 +104,11 @@ namespace LoLStatsMaui.ViewModels
                 await Shell.Current.GoToAsync(nameof(LoginPage));
             }
             
+        }
+        [RelayCommand]
+        private void SelectHistory(string lolName)
+        {
+            LolName = lolName;
         }
 
         [RelayCommand]

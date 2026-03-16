@@ -60,6 +60,8 @@ namespace LoLStatsMaui.Application.Facade
             }
 
         }
+        public List<string> GetSearchHistory() => _currentUserService.CurrentUser.SearchHistory;
+        public async Task AddSearchedLolName(string lolName) => await _userService.AddSearchedLolName(lolName);
         public void Logout()
         {
             _currentUserService.Logout();

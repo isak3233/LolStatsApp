@@ -13,5 +13,6 @@ namespace Domain.Models.Enities.UserEnities
         public string Password { get; set; }
         public List<string> LinkedLolAccounts { get; set; } = new();
         public List<string> FollowedAccounts { get; set; } = new();
+        public List<string> SearchHistory { get; set; } = new();
     }
 }

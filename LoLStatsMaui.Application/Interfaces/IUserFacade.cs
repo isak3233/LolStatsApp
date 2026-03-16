@@ -13,7 +13,10 @@ namespace LoLStatsMaui.Application.Interfaces
         Task UnlinkLolAccountAsync(string puuid);
         bool GetFollowInfo(string puuid);
         Task HandleFollow(string puuid);
-        
+        List<string> GetSearchHistory();
+        Task AddSearchedLolName(string lolName);
+
+
         void Logout();
         User? CurrentUser { get; }
         bool IsLoggedIn { get; }
