@@ -1,4 +1,5 @@
 ﻿using Domain.Models.Enities.LolEnities;
+using Domain.Models.Enities.Requests;
 using Domain.Models.Entities.Requests;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,10 @@ namespace LoLStatsMaui.Application.Interfaces
     {
         Task<LolProfileData> GetLolProfileAsync(string lolName, bool update = false);
         Task<List<LolMatch>> GetLolMatches(MatchQueryRequest matchRequest);
-        
+        Task<int> GetRandomProfileImageIdAsync(LolAccountMetaData accountMetaData);
+        Task<SummonerOverview> GetSummonerOverview(string puuid);
+        Task<LolAccountMetaData> GetLolAccountMetaDataAsync(string lolName);
+
+
     }
 }

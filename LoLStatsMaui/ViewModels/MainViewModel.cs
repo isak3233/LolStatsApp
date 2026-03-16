@@ -48,7 +48,7 @@ namespace LoLStatsMaui.ViewModels
             {
                 LoginBtnText = "Logga ut";
                 IsLoggedIn = true;
-                SearchHistory = new ObservableCollection<string>(_userFacade.CurrentUser.SearchHistory); 
+                SearchHistory = new ObservableCollection<string>(_userFacade.GetSearchHistory()); 
             }
             else
             {

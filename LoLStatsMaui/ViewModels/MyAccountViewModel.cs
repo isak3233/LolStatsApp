@@ -15,7 +15,7 @@ namespace LoLStatsMaui.ViewModels
 {
     public partial class MyAccountViewModel : ObservableObject
     {
-        private readonly IAccountFacade _accountFacade;
+        private readonly IUserFacade _userFacade;
 
         [ObservableProperty]
         private string _username;
@@ -34,9 +34,9 @@ namespace LoLStatsMaui.ViewModels
         public bool HasNoFollowedAccounts => FollowedAccounts == null || FollowedAccounts.Count == 0;
         partial void OnFollowedAccountsChanged(List<SummonerOverview> value) => OnPropertyChanged(nameof(HasNoFollowedAccounts));
 
-        public MyAccountViewModel(IAccountFacade accountFacade)
+        public MyAccountViewModel(IUserFacade userFacade)
         {
-            _accountFacade = accountFacade;
+            _userFacade = userFacade;
         }
         public async void OnAppearing()
         {
@@ -53,9 +53,9 @@ namespace LoLStatsMaui.ViewModels
         {
             try
             {
-                Username = _accountFacade.GetUsername();
-                var linkedAccountsTask = _accountFacade.GetSummonerOverviewsAsync();
-                var followedAccountsTask = _accountFacade.GetFollowersSummonerOverviewsAsync();
+                Username = _userFacade.GetUsername();
+                var linkedAccountsTask = _userFacade.GetLinkedSummonerOverviewsAsync();
+                var followedAccountsTask = _userFacade.GetFollowersSummonerOverviewsAsync();
                 LinkedAccounts = await linkedAccountsTask;
                 FollowedAccounts = await followedAccountsTask;
                 ErrorMessage = "";
@@ -92,14 +92,14 @@ namespace LoLStatsMaui.ViewModels
         [RelayCommand]
         private async Task UnlinkAccount(string uuid)
         {
-            await _accountFacade.UnlinkLolAccountAsync(uuid);
-            LinkedAccounts = await _accountFacade.GetSummonerOverviewsAsync();
+            await _userFacade.UnlinkLolAccountAsync(uuid);
+            LinkedAccounts = await _userFacade.GetLinkedSummonerOverviewsAsync();
         }
         [RelayCommand]
         private async Task UnfollowAccount(string uuid)
         {
-            await _accountFacade.UnfollowAccountAsync(uuid);
-            FollowedAccounts = await _accountFacade.GetFollowersSummonerOverviewsAsync();
+            await _userFacade.HandleFollow(uuid);
+            FollowedAccounts = await _userFacade.GetFollowersSummonerOverviewsAsync();
         }
         [RelayCommand]
         private async Task NavigateToLinkAccount()

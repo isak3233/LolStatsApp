@@ -41,6 +41,7 @@ namespace LoLStatsMaui.Application.Services
             }
             
         }
+
         private async Task<SummonerOverview> GetUpdatedSummonerOverview(LolAccountMetaData accountMetaData)
         {
             var summonerDataTask = _lolApiRepository.GetSummoner(accountMetaData.Puuid, accountMetaData.Region);

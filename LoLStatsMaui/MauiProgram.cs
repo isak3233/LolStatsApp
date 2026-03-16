@@ -46,11 +46,9 @@ namespace LoLStatsMaui
             builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
             builder.Services.AddScoped<IUserService, UserService>();
 
-            //Kör facade här så att vi sätter ihop UserService och CurrentUserService så att våran ui kan bara kalla på (exempel) CreateUser och sen tar våran facade hand om att skapa kontot och sedan logga in användaren. 
+            //Kör facade här eftersom det är många Services som jobbar ihop för vissa user funktioner. Så som att länka kontot med ett lol konto osv.
             builder.Services.AddScoped<IUserFacade, UserFacade>();
 
-            // Samma anleding som innan. Göra så att våran ui kan använda en service
-            builder.Services.AddScoped<IAccountFacade, AccountFacade>();
 
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<MainViewModel>();

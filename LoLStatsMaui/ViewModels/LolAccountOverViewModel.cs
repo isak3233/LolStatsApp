@@ -114,12 +114,6 @@ namespace LoLStatsMaui.ViewModels
             try
             {
                 await LoadLolProfile();
-                IsFollowing = _userFacade.GetFollowInfo(SummonerOverview.Uuid);
-                _matchRequest = new MatchQueryRequest
-                {
-                    Start = -10,
-                    Count = 10
-                };
                 SelectedQueueType = "Alla"; // Detta kommer trigga OnSelectedQueueTypeChanged som loadar in våra matcher
             }
             catch (NotFoundException e)
@@ -164,6 +158,12 @@ namespace LoLStatsMaui.ViewModels
         {
             var profile = await _lolFacade.GetLolProfileAsync(LolName);
             SummonerOverview = profile.SummonerOverview;
+            IsFollowing = _userFacade.GetFollowInfo(SummonerOverview.Uuid);
+            _matchRequest = new MatchQueryRequest
+            {
+                Start = -10,
+                Count = 10
+            };
             MatchList = new ObservableCollection<LolMatch>(profile.Matches);
         }
         private async Task AddLolMatchesToList()
