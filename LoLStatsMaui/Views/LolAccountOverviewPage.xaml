@@ -199,11 +199,14 @@
                                     TextColor="White"
                                     VerticalOptions="Center" />
 
-                                <Button
+                                <Picker
                                     Grid.Column="1"
-                                    Command="{Binding NavigateToLiveGameCommand}"
-                                    Text="Live Game"
-                                    VerticalOptions="Center" />
+                                    BackgroundColor="#1E3A5F"
+                                    ItemsSource="{Binding QueueTypes}"
+                                    SelectedItem="{Binding SelectedQueueType}"
+                                    TextColor="White"
+                                    VerticalOptions="Center"
+                                    WidthRequest="200" />
 
                                 <Border
                                     Grid.Column="2"
@@ -218,6 +221,12 @@
                                         Text="LIVE"
                                         TextColor="Red" />
                                 </Border>
+
+                                <Button
+                                    Grid.Column="3"
+                                    Command="{Binding NavigateToLiveGameCommand}"
+                                    Text="Live Game"
+                                    VerticalOptions="Center" />
                             </Grid>
                             <CollectionView
                                 ItemsSource="{Binding MatchList}"
@@ -245,6 +254,10 @@
 
                                                 <!--  Game Meta data  -->
                                                 <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                                    <Label
+                                                        FontSize="11"
+                                                        Text="{Binding GameCreationString}"
+                                                        TextColor="#8A8A9A" />
                                                     <Label Text="{Binding QueueType}" TextColor="White" />
                                                     <Label
                                                         FontAttributes="Bold"

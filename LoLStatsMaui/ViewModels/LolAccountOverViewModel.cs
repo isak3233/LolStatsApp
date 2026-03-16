@@ -8,8 +8,10 @@ using Domain.Models.Interfaces;
 using LoLStatsMaui.Application.Facade;
 using LoLStatsMaui.Application.Interfaces;
 using LoLStatsMaui.Domain.Exceptions;
+using LoLStatsMaui.Infrastructure.Constants;
 using LoLStatsMaui.Views;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -36,6 +38,19 @@ namespace LoLStatsMaui.ViewModels
         private ObservableCollection<LolMatch> _matchList = new();
 
         [ObservableProperty]
+        private string _selectedQueueType;
+
+        public List<string> QueueTypes => new()
+        {
+            "Alla",
+            "Ranked Solo/Duo",
+            "Ranked Flex",
+            "Normal",
+            "Arena",
+            "Aram",
+        };
+
+        [ObservableProperty]
         private string _errorMessage;
         [ObservableProperty]
         private string _loadMatchError;
@@ -55,6 +70,7 @@ namespace LoLStatsMaui.ViewModels
 
         partial void OnHasErrorChanged(bool value) => OnPropertyChanged(nameof(ShowContent));
         partial void OnIsLoadingChanged(bool value) => OnPropertyChanged(nameof(ShowContent));
+
         public LolAccountOverViewModel(ILolFacade lolFacade, IUserFacade userFacade)
         {
             _lolFacade = lolFacade;
@@ -69,6 +85,21 @@ namespace LoLStatsMaui.ViewModels
                 LoadPage();
             }
         }
+        partial void OnSelectedQueueTypeChanged(string value)
+        {
+            if (SummonerOverview != null)
+            {
+                _matchRequest = _matchRequest with
+                {
+                    Start = -10,
+                    Queue = RiotMapper.GetQueueId(SelectedQueueType)
+
+                };
+                MatchList = new();
+                AddLolMatchesToList();
+            }
+                
+        }
         private async void LoadPage()
         {
             await LoadPageAsync();
@@ -76,6 +107,7 @@ namespace LoLStatsMaui.ViewModels
         private async Task LoadPageAsync()
         {
             IsLoading = true;
+            
             try
             {
                 await LoadLolProfile();
@@ -85,7 +117,7 @@ namespace LoLStatsMaui.ViewModels
                     Start = -10,
                     Count = 10
                 };
-                AddLolMatchesToList();
+                SelectedQueueType = "Alla"; // Detta kommer trigga OnSelectedQueueTypeChanged som loadar in våra matcher
             }
             catch (NotFoundException e)
             {
