@@ -30,8 +30,10 @@ namespace LoLStatsMaui.Application.Mappers
             foreach (var player in lolMatch.Players)
             {
                 player.IsTargetPlayer = player.Puuid == puuid;
+                
             }
             lolMatch.TargetPlayer = lolMatch.Players.FirstOrDefault(p => p.Puuid == puuid);
+            lolMatch.GameCreationString = GetMatchTimeString(lolMatch.GameCreation);
             return lolMatch;
         }
 
