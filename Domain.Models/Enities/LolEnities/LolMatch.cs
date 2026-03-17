@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,9 @@ namespace Domain.Models.Enities.LolEnities
 {
     public class LolMatch
     {
+        [BsonId]
+        public string MatchId { get; set; }
+        [BsonIgnore]
         public LolMatchPlayer TargetPlayer { get; set; }
         public List<LolMatchPlayer> Players { get; set; }
         public List<LolMatchPlayer> Team1Players => Players.Where(p => p.TeamId == 100).ToList();
@@ -13,6 +17,7 @@ namespace Domain.Models.Enities.LolEnities
         public string QueueType { get; set; }
         public long GameDuration { get; set; }
         public long GameCreation { get; set; }
+        [BsonIgnore]
         public string GameCreationString { get; set; }
     }
     

@@ -26,4 +26,5 @@ public class LolStatsDbContext
     public IMongoCollection<User> Users => _database.GetCollection<User>("Users");
     public IMongoCollection<SummonerOverview> SummonerOverviews => _database.GetCollection<SummonerOverview>("SummonerOverviews");
     public IMongoCollection<LolAccountMetaData> LolAccountsMetaData => _database.GetCollection<LolAccountMetaData>("LolAccountsMetaData");
+    public IMongoCollection<LolMatch> LolMatches => _database.GetCollection<LolMatch>("LolMatches");
 }

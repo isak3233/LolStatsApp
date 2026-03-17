@@ -56,6 +56,21 @@ namespace LoLStatsMaui.Infrastructure.Repositories
             var result = await _context.LolAccountsMetaData.FindAsync(filter);
             return await result.FirstOrDefaultAsync();
         }
+        public async Task<List<LolMatch>> GetLolMatches(List<string> matchIds)
+        {
+            var filter = Builders<LolMatch>.Filter.In(s => s.MatchId, matchIds);
+            var result = await _context.LolMatches.FindAsync(filter);
+            return await result.ToListAsync();
+        }
+        public async Task UpsertLolMatchesAsync(List<LolMatch> lolMatches)
+        {
+            var tasks = lolMatches.Select(match =>
+            {
+                var filter = Builders<LolMatch>.Filter.Eq(m => m.MatchId, match.MatchId);
+                return _context.LolMatches.ReplaceOneAsync(filter, match, new ReplaceOptions { IsUpsert = true });
+            });
+            await Task.WhenAll(tasks);
+        }
 
 
     }

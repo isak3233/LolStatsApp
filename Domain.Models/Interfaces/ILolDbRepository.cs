@@ -13,5 +13,7 @@ namespace Domain.Models.Interfaces
         Task UpsertLolAccountMetaDataAsync(LolAccountMetaData lolAccountMetaData);
         Task<LolAccountMetaData?> GetLolAccountMetaDataAsync(string lolName);
         Task<LolAccountMetaData?> GetLolAccountMetaDataByPuuidAsync(string lolName);
+        Task<List<LolMatch>> GetLolMatches(List<string> matchIds);
+        Task UpsertLolMatchesAsync(List<LolMatch> lolMatches);
     }
 }

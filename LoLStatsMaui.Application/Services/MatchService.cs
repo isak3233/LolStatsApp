@@ -17,10 +17,12 @@ namespace LoLStatsMaui.Application.Services
     public class MatchService : IMatchService
     {
         private readonly ILolApiRepository _lolApiRepository;
+        private readonly ILolDbRepository _lolDbRepository;
 
-        public MatchService(ILolApiRepository lolApiRepository)
+        public MatchService(ILolApiRepository lolApiRepository, ILolDbRepository lolDbRepository)
         {
             _lolApiRepository = lolApiRepository;
+            _lolDbRepository = lolDbRepository;
         }
         public async Task<CurrentLolMatch?> GetCurrentMatch(LolAccountMetaData lolAccountMetaData)
         {
@@ -33,12 +35,32 @@ namespace LoLStatsMaui.Application.Services
             
             var routing = RegionMapper.GetRouting(request.Region);
             request = request with { Region = routing };
+
             var matchIds = await _lolApiRepository.GetLolMatchesId(request);
-            var matchDtoTasks = matchIds.Select(id => _lolApiRepository.GetLolMatch(id, routing)).ToList();
-            var matchesDto = await Task.WhenAll(matchDtoTasks);
-            return matchesDto.Select(m => MatchMapper.Map(m, request.Uuid)).ToList();
-            
-            
+            var dbMatchesDto = await _lolDbRepository.GetLolMatches(matchIds);
+
+            //Lägger in targetPlayerInfo
+            var dbMatches = dbMatchesDto.Select(m => MatchMapper.MapDbMatch(m, request.Uuid)).ToList();
+
+            var dbMatchIds = dbMatches.Select(m => m.MatchId).ToList();
+            var missingMatchIds = matchIds.Where(id => !dbMatchIds.Contains(id)).ToList();
+
+            var apiMatchDtoTasks = missingMatchIds.Select(id => _lolApiRepository.GetLolMatch(id, routing)).ToList();
+            var apiMatchesDto = await Task.WhenAll(apiMatchDtoTasks);
+
+            var apiMatches = apiMatchesDto.Select(m => MatchMapper.Map(m, request.Uuid)).ToList();
+
+            _ = _lolDbRepository.UpsertLolMatchesAsync(apiMatches);
+
+            //Sätter ihop listorna och soreterar dom efter ids
+            var allMatches = apiMatches.Concat(dbMatches)
+                .OrderByDescending(m => long.Parse(m.MatchId.Split('_')[1]))
+                .ToList();
+
+            return allMatches;
+
+
+
         }
     }
 }

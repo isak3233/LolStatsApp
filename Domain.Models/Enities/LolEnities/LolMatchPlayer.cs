@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +7,9 @@ namespace Domain.Models.Enities.LolEnities
 {
     public class LolMatchPlayer
     {
+        [BsonIgnore]
         public bool IsTargetPlayer { get; set; }
+        public string Puuid { get; set; }
         public string FullLolName => $"{GameName}#{TagLine}";
         public string GameName { get; set; }
         public string TagLine { get; set; }

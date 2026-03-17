@@ -1,9 +1,11 @@
 ﻿using Domain.Models.Enities.Dto;
 using Domain.Models.Enities.LolEnities;
+using Domain.Models.Entities.Requests;
 using Domain.Models.EntitiesDto;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace LoLStatsMaui.Application.Mappers
 {
@@ -14,6 +16,7 @@ namespace LoLStatsMaui.Application.Mappers
             var targetPlayer = MapPlayer(dto.Info.Participants.First(p => p.Puuid == puuid));
             return new LolMatch
             {
+                MatchId = dto.Metadata.MatchId,
                 TargetPlayer = targetPlayer,
                 Players = dto.Info.Participants.Select(p => MapPlayer(p, targetPlayer)).ToList(),
                 QueueType = QueueMapper.GetQueueType(dto.Info.QueueId),
@@ -22,12 +25,22 @@ namespace LoLStatsMaui.Application.Mappers
                 GameCreationString = GetMatchTimeString(dto.Info.GameCreation),
             };
         }
+        public static LolMatch MapDbMatch(LolMatch lolMatch, string puuid)
+        {
+            foreach (var player in lolMatch.Players)
+            {
+                player.IsTargetPlayer = player.Puuid == puuid;
+            }
+            lolMatch.TargetPlayer = lolMatch.Players.FirstOrDefault(p => p.Puuid == puuid);
+            return lolMatch;
+        }
 
         private static LolMatchPlayer MapPlayer(ParticipantDto participant, LolMatchPlayer? targetPlayer = null)
         {
             return new LolMatchPlayer
             {
                 IsTargetPlayer = targetPlayer?.GameName == participant.RiotIdGameName,
+                Puuid = participant.Puuid,
                 GameName = participant.RiotIdGameName,
                 TagLine = participant.RiotIdTagline,
                 Win = participant.Win,
@@ -49,6 +62,7 @@ namespace LoLStatsMaui.Application.Mappers
                 TeamPosition = participant.TeamPosition,
             };
         }
+
         public static CurrentLolMatch Map(CurrentGameInfoDto dto, string puuid)
         {
             return new CurrentLolMatch
