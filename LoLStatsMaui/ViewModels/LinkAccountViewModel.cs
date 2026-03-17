@@ -18,7 +18,7 @@ namespace LoLStatsMaui.ViewModels
         private readonly ILolFacade _lolFacade;
 
         private LolAccountMetaData _lolAccountMetaData;
-        private int _randonIconId;
+        private int _randomIconId;
 
         [ObservableProperty]
         private string _lolName;
@@ -49,8 +49,8 @@ namespace LoLStatsMaui.ViewModels
                 // Försöker hitta kontot
                 _lolAccountMetaData = await _lolFacade.GetLolAccountMetaDataAsync(LolName);
                 ErrorMessage = "";
-                _randonIconId = await _lolFacade.GetRandomProfileImageIdAsync(_lolAccountMetaData);
-                ProfileIconString = $"ProfileIcons/{_randonIconId}.png";
+                _randomIconId = await _lolFacade.GetRandomProfileImageIdAsync(_lolAccountMetaData);
+                ProfileIconString = $"ProfileIcons/{_randomIconId}.png";
                 AccountFound = true;
             }
             catch (NotFoundException ex)
@@ -77,10 +77,11 @@ namespace LoLStatsMaui.ViewModels
         {
             try
             {
-                var successful = await _userFacade.VerifyAccountAsync(_lolAccountMetaData, _randonIconId);
+                var successful = await _userFacade.VerifyAccountAsync(_lolAccountMetaData, _randomIconId);
 
                 if (successful)
                 {
+                    ErrorMessage = "";
                     VerifiedMessage = "Lyckades verifera LoL kontot. Du skickas tillbaka till huvudsidan om 3 sekunder";
                     await Task.Delay(1000);
                     VerifiedMessage = "Lyckades verifera LoL kontot. Du skickas tillbaka till huvudsidan om 2 sekunder";
@@ -92,7 +93,7 @@ namespace LoLStatsMaui.ViewModels
                 }
                 else
                 {
-                    ErrorMessage = "Lyckades inte verifiera LoL kontot. Se till att sätta på den angivna profil bilden";
+                    ErrorMessage = "Lyckades inte verifiera LoL kontot. Se till att sätta på den angivna profil bilden. Ibland kan det ta lite tid för lol att uppdateras";
                 }
             }
             catch (LolAccountAlreadyLinkedException ex)

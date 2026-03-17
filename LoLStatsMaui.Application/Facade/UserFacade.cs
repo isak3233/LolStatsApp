@@ -6,6 +6,7 @@ using LoLStatsMaui.Application.Services;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -44,6 +45,8 @@ namespace LoLStatsMaui.Application.Facade
         public async Task<bool> VerifyAccountAsync(LolAccountMetaData accountMetaData, int profileIconId)
         {
             var summoner = await _summonerService.GetSummonerDto(accountMetaData);
+            Debug.WriteLine(summoner.profileIconId);
+            Debug.WriteLine(profileIconId);
             if (summoner.profileIconId == profileIconId)
             {
                 await LinkLolAccountAsync(accountMetaData.Puuid);

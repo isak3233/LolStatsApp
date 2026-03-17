@@ -52,7 +52,11 @@
             Grid.Row="1"
             HorizontalOptions="Center"
             VerticalOptions="Center">
-
+            <Label
+                FontAttributes="Bold"
+                FontSize="20"
+                Text="Sök efter ett lol konto"
+                TextColor="White" />
             <HorizontalStackLayout Spacing="20">
                 <Entry
                     BackgroundColor="White"

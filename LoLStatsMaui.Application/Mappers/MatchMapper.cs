@@ -19,6 +19,7 @@ namespace LoLStatsMaui.Application.Mappers
                 QueueType = QueueMapper.GetQueueType(dto.Info.QueueId),
                 GameDuration = dto.Info.GameDuration / 60,
                 GameCreation = dto.Info.GameCreation,
+                GameCreationString = GetMatchTimeString(dto.Info.GameCreation),
             };
         }
 
@@ -45,7 +46,7 @@ namespace LoLStatsMaui.Application.Mappers
                 Item6 = participant.Item6,
                 Kills = participant.Kills,
                 TeamId = participant.TeamId,
-                TeamPosition = participant.TeamPosition
+                TeamPosition = participant.TeamPosition,
             };
         }
         public static CurrentLolMatch Map(CurrentGameInfoDto dto, string puuid)
@@ -71,6 +72,21 @@ namespace LoLStatsMaui.Application.Mappers
                 Puuid = puuid,
                 RiotId = dto.RiotId,
             };
+        }
+        private static string GetMatchTimeString(long gameCreation)
+        {
+            var matchTime = DateTimeOffset.FromUnixTimeMilliseconds(gameCreation).LocalDateTime;
+            var diff = DateTime.Now - matchTime;
+
+            if (diff.TotalMinutes < 60)
+                return diff.TotalMinutes < 2 ? "1 minut sedan" : $"{(int)diff.TotalMinutes} minuter sedan";
+            if (diff.TotalHours < 24)
+                return diff.TotalHours < 2 ? "1 timme sedan" : $"{(int)diff.TotalHours} timmar sedan";
+            if (diff.TotalDays < 30)
+                return diff.TotalDays < 2 ? "1 dag sedan" : $"{(int)diff.TotalDays} dagar sedan";
+
+            int months = (int)(diff.TotalDays / 30);
+            return months < 2 ? "1 månad sedan" : $"{months} månader sedan";
         }
     }
 }
