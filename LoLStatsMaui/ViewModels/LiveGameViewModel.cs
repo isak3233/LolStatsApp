@@ -41,9 +41,9 @@ namespace LoLStatsMaui.ViewModels
         partial void OnIsLoadingChanged(bool value) => OnPropertyChanged(nameof(ShowContent));
 
         public bool IsNotInGame => SummonerOverview?.CurrentLolMatch == null;
-        public List<CurrentLolMatchPlayer> BlueTeamPlayers => SummonerOverview?.CurrentLolMatch?.Players.Where(p => p.TeamId == 100).ToList() ?? new();
+        public List<CurrentLolMatchPlayer> BlueTeamPlayers => SummonerOverview?.CurrentLolMatch?.Team1Players ?? new();
 
-        public List<CurrentLolMatchPlayer> RedTeamPlayers => SummonerOverview?.CurrentLolMatch?.Players.Where(p => p.TeamId == 200).ToList() ?? new();
+        public List<CurrentLolMatchPlayer> RedTeamPlayers => SummonerOverview?.CurrentLolMatch?.Team2Players ?? new();
 
         partial void OnSummonerOverviewChanged(SummonerOverview value)
         {

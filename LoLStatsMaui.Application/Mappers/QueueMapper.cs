@@ -32,11 +32,9 @@ namespace LoLStatsMaui.Application.Mappers
             { 400, "Normal" },
         };
 
-        public static string GetQueueType(string queueType) =>
-            QueueTypeMap.TryGetValue(queueType, out var readable) ? readable : queueType;
+        public static string GetQueueType(string queueType) => QueueTypeMap.TryGetValue(queueType, out var readable) ? readable : queueType;
 
-        public static string GetQueueType(int queueId) =>
-            QueueIdMap.TryGetValue(queueId, out var readable) ? readable : "Gamemode";
+        public static string GetQueueType(int queueId) => QueueIdMap.TryGetValue(queueId, out var readable) ? readable : "Gamemode";
 
         public static int? GetQueueId(string queueType)
         {

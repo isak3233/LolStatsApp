@@ -14,11 +14,14 @@ namespace LoLStatsMaui.Application.Mappers
         public static LolMatch Map(LolMatchDto dto, string puuid)
         {
             var targetPlayer = MapPlayer(dto.Info.Participants.First(p => p.Puuid == puuid));
+            var players = dto.Info.Participants.Select(p => MapPlayer(p, targetPlayer)).ToList();
             return new LolMatch
             {
                 MatchId = dto.Metadata.MatchId,
                 TargetPlayer = targetPlayer,
-                Players = dto.Info.Participants.Select(p => MapPlayer(p, targetPlayer)).ToList(),
+                Players = players,
+                Team1Players = players.Where(p => p.TeamId == 100).ToList(),
+                Team2Players = players.Where(p => p.TeamId == 200).ToList(),
                 QueueType = QueueMapper.GetQueueType(dto.Info.QueueId),
                 GameDuration = dto.Info.GameDuration / 60,
                 GameCreation = dto.Info.GameCreation,
@@ -34,6 +37,8 @@ namespace LoLStatsMaui.Application.Mappers
             }
             lolMatch.TargetPlayer = lolMatch.Players.FirstOrDefault(p => p.Puuid == puuid);
             lolMatch.GameCreationString = GetMatchTimeString(lolMatch.GameCreation);
+            lolMatch.Team1Players = lolMatch.Players.Where(p => p.TeamId == 100).ToList();
+            lolMatch.Team2Players = lolMatch.Players.Where(p => p.TeamId == 200).ToList();
             return lolMatch;
         }
 
@@ -67,13 +72,16 @@ namespace LoLStatsMaui.Application.Mappers
 
         public static CurrentLolMatch Map(CurrentGameInfoDto dto, string puuid)
         {
+            var players = dto.Participants.Select(p => MapPlayer(p, puuid)).ToList();
             return new CurrentLolMatch
             {
                 GameType = dto.GameType,
                 GameStartTime = dto.GameStartTime,
                 GameLength = dto.GameLength,
                 GameMode = QueueMapper.GetQueueType((int)dto.GameQueueConfigId),
-                Players = dto.Participants.Select(p => MapPlayer(p, puuid)).ToList()
+                Players = players,
+                Team1Players = players.Where(p => p.TeamId == 100).ToList(),
+                Team2Players = players.Where(p => p.TeamId == 200).ToList(),
             };
         }
 

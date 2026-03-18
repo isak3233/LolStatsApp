@@ -11,5 +11,7 @@ namespace Domain.Models.Enities.LolEnities
         public long GameLength { get; set; }
         public string GameMode { get; set; }
         public List<CurrentLolMatchPlayer> Players { get; set; }
+        public List<CurrentLolMatchPlayer> Team1Players { get; set; }
+        public List<CurrentLolMatchPlayer> Team2Players { get; set; }
     }
 }

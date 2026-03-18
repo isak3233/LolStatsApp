@@ -22,7 +22,7 @@ namespace LoLStatsMaui.Application.Services
 
         public async Task<LolAccountMetaData> GetLolAccountMetaData(string lolName, bool updateData = false)
         {
-            if(string.IsNullOrEmpty(lolName) || !(lolName.Count(c => c == '#') == 1) || lolName.Split('#')[0].Length < 4 || lolName.Split('#')[1].Length < 3)
+            if(string.IsNullOrEmpty(lolName) || !(lolName.Count(c => c == '#') == 1) || lolName.Split('#')[0].Length < 3 || lolName.Split('#')[1].Length < 3)
             {
                 throw new ArgumentException();
             }

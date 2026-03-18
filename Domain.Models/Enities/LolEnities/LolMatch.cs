@@ -12,8 +12,8 @@ namespace Domain.Models.Enities.LolEnities
         [BsonIgnore]
         public LolMatchPlayer TargetPlayer { get; set; }
         public List<LolMatchPlayer> Players { get; set; }
-        public List<LolMatchPlayer> Team1Players => Players.Where(p => p.TeamId == 100).ToList();
-        public List<LolMatchPlayer> Team2Players => Players.Where(p => p.TeamId == 200).ToList();
+        public List<LolMatchPlayer> Team1Players { get; set; }
+        public List<LolMatchPlayer> Team2Players { get; set; }
         public string QueueType { get; set; }
         public long GameDuration { get; set; }
         public long GameCreation { get; set; }

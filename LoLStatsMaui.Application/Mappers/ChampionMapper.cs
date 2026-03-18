@@ -182,7 +182,6 @@ namespace LoLStatsMaui.Application.Mappers
             { 143, "Zyra" },
         };
 
-        public static string GetChampionName(long championId) =>
-            ChampionIdToName.TryGetValue(championId, out var name) ? name : "Unknown";
+        public static string GetChampionName(long championId) => ChampionIdToName.TryGetValue(championId, out var name) ? name : "Unknown";
     }
 }

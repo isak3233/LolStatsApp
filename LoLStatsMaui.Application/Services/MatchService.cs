@@ -37,6 +37,7 @@ namespace LoLStatsMaui.Application.Services
             request = request with { Region = routing };
 
             var matchIds = await _lolApiRepository.GetLolMatchesId(request);
+
             var dbMatchesDto = await _lolDbRepository.GetLolMatches(matchIds);
 
             //Lägger in targetPlayerInfo
